@@ -14,14 +14,14 @@ app.use(express.urlencoded({ extended: true }));
 async function main() {
   try {
     await db.authenticate();
-    await db.sync();
+    // await db.sync();
     console.log("conexion correcta");
   } catch (error) {
     console.log(error);
   }
 }
 
-// main();
+main();
 
 const viewsPath = path.join(__dirname, 'views')
 
