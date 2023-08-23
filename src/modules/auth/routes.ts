@@ -1,8 +1,16 @@
-import { Router } from "express";
-import { authController } from "./controller";
+import express from "express";
+import {
+  formularioLogin,
+  formularioRegistro,
+  formularioOlvidePassword,
+  registrar,
+} from "./controller";
 
-const authRoutes = Router();
+const router = express.Router();
 
-authRoutes.get('/login', authController)
+router.get("/login", formularioLogin);
+router.get("/registro", formularioRegistro);
+router.post("/registrar", registrar);
+router.get("/olvide-password", formularioOlvidePassword);
 
-export default authRoutes
+export default router;

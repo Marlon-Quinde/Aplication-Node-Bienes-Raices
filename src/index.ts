@@ -1,7 +1,7 @@
 // const express = require("express"); // Common JS
 import express from "express"; //ES6
-import usuarioRoutes from "./auth/routes";
-import db from "../config/db";
+import usuarioRoutes from "./modules/auth/routes";
+import db from "./config/db";
 
 // Crear la App
 const app = express();
