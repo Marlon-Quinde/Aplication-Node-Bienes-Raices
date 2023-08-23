@@ -2,6 +2,7 @@
 import express from "express"; //ES6
 import usuarioRoutes from "./modules/auth/routes";
 import db from "./config/db";
+import path from "path";
 
 // Crear la App
 const app = express();
@@ -20,11 +21,18 @@ async function main() {
   }
 }
 
-main();
+// main();
+
+const viewsPath = path.join(__dirname, 'views')
+
+// console.log({
+//   viewsPath
+// });
+
 
 // Habilitar pug
 app.set("view engine", "pug");
-app.set("views", "./views");
+app.set("views", viewsPath);
 
 //Carpeta Publica
 app.use(express.static("public"));
