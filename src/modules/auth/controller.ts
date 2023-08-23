@@ -1,6 +1,6 @@
 import { check, validationResult } from "express-validator";
-import Usuario from "../models/Usuario.js";
-import { generarId } from "../helpers/tokens.js";
+import Usuario from "../../models/Usuario";
+import { generarId } from "../../helpers/tokens";
 import { Request, Response } from "express";
 
 const formularioLogin = (req: Request, res: Response) => {

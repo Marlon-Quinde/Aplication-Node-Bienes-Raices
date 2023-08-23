@@ -5,8 +5,9 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "start": "node ./index.js",
-    "serve": "nodemon index.js",
+    "start": "node dist/index.js",
+    "dev": "nodemon src/index.ts",
+    "build": "tsc",
     "css": "postcss public/css/tailwind.css -o public/css/app.css --watch",
     "tsc": "tsc"
   },
