@@ -1,6 +1,7 @@
 import { DataTypes } from "sequelize";
 import bcrypt from "bcrypt";
 import db from "../config/db";
+import { UsuarioInterface } from "../interfaces/usuario.interface";
 
 const Usuario = db.define(
   "usuarios",

@@ -23,19 +23,18 @@ async function main() {
 
 main();
 
-const viewsPath = path.join(__dirname, 'views')
+const viewsPath = path.join(__dirname, "views");
 
 // console.log({
-//   viewsPath
+//   viewsPath,
 // });
-
 
 // Habilitar pug
 app.set("view engine", "pug");
 app.set("views", viewsPath);
 
-//Carpeta Publica
 app.use(express.static("public"));
+//Carpeta Publica
 
 // Routing
 app.use("/auth", usuarioRoutes);
