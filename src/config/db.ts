@@ -1,5 +1,4 @@
 import { Sequelize } from "sequelize";
-import dotenv from "dotenv";
 import { DB_NOMBRE, DB_PASS, DB_USER } from "../environments";
 
 const db = new Sequelize(DB_NOMBRE, DB_USER, DB_PASS, {
