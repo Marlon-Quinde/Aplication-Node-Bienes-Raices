@@ -6,18 +6,13 @@ import {
   registrar,
   confirmar,
 } from "./controller";
+import { validarUsuario } from "../../validations";
 
 const router = express.Router();
 
-router.get(
-  "/login",
-  [
-    //Aqui van todos lo middelware
-  ],
-  formularioLogin
-);
-router.get("/registro", formularioRegistro);
-router.post("/registrar", registrar);
+router.get("/login", validarUsuario, formularioLogin);
+router.get("/registro" , formularioRegistro);
+router.post("/registrar", validarUsuario , registrar);
 router.get("/olvide-password", formularioOlvidePassword);
 router.get("/confirmar/:token", confirmar);
 
