@@ -2,7 +2,7 @@ import { check, validationResult } from "express-validator";
 import Usuario from "../../models/Usuario";
 import { generarId } from "../../helpers/tokens";
 import { emailRegistro } from "../../helpers/email";
-import { Request, Response } from "express";
+import { Request, Response, NextFunction } from "express";
 import { UsuarioInterface } from "../../interfaces/usuario.interface";
 
 const formularioLogin = (req: Request, res: Response) => {
@@ -90,8 +90,31 @@ const registrar = async (req: Request, res: Response) => {
   });
 };
 
-const confirmar = (req: Request, res: Response) => {
-  console.log("Comprobando...");
+const confirmar = async (req: Request, res: Response) => {
+  const { token } = req.params;
+  console.log(token);
+
+  // Verificar si e token es valido
+
+  const usuario = await Usuario.findOne({ where: { token } });
+
+  if (!usuario) {
+    return res.render("auth/confirmar-cuenta", {
+      pagina: "Error al confirmar tu cuenta",
+      mensaje: "Hubo un error al confirmar cuenta, intenta de nuevo",
+      error: true,
+    });
+  }
+
+  usuario.token = null;
+  usuario.confirmado = true;
+
+  await usuario.save();
+  return res.render("auth/confirmar-cuenta", {
+    pagina: "Cuenta confirmada",
+    mensaje: "La cuenta se confirmo exitosamente",
+  });
+  // Confirmar la cuenta
 };
 
 export {

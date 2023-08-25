@@ -3,6 +3,7 @@ import express from "express"; //ES6
 import usuarioRoutes from "./modules/auth/routes";
 import db from "./config/db";
 import path from "path";
+import { BACKEND_PORT } from "./environments";
 
 // Crear la App
 const app = express();
@@ -40,7 +41,7 @@ app.use(express.static("public"));
 app.use("/auth", usuarioRoutes);
 
 //?Definir un puerto y arrancar el proyecto
-const port = 3000;
+const port = BACKEND_PORT || 3000;
 app.listen(port, () => {
   console.log(`El servidor esta funcionando en el puerto ${port}`);
 });
