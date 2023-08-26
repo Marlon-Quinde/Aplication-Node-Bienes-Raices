@@ -19,6 +19,6 @@ router.get(
 router.get("/registro", formularioRegistro);
 router.post("/registrar", registrar);
 router.get("/olvide-password", formularioOlvidePassword);
-router.get("/confirmar", confirmar);
+router.get("/confirmar/:token", confirmar);
 
 export default router;
