@@ -6,6 +6,9 @@ import { Request, Response, NextFunction } from "express";
 import { UsuarioInterface } from "../../interfaces/usuario.interface";
 import { csrfRequest } from "../../interfaces/crsf.interface";
 import bcrypt from "bcrypt";
+import AuthService from "./service";
+
+const servicio = new AuthService();
 
 export const formularioLogin = (req: csrfRequest, res: Response) => {
   res.render("auth/login", {
@@ -88,10 +91,7 @@ export const registrar = async (req: csrfRequest, res: Response) => {
   const { nombre, email, password } = req.body;
 
   //Verificar que el usuario no este duplicado
-
-  const existeUsuario: UsuarioInterface = await Usuario.findOne({
-    where: { email },
-  });
+  const existeUsuario = await servicio.existeUsuario(email);
 
   if (existeUsuario) {
     return res.render("auth/registro", {
