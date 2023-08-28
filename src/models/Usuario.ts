@@ -1,7 +1,6 @@
 import { DataTypes } from "sequelize";
 import bcrypt from "bcrypt";
 import db from "../config/db";
-import { UsuarioInterface } from "../interfaces/usuario.interface";
 
 const Usuario = db.define(
   "usuarios",
@@ -30,5 +29,9 @@ const Usuario = db.define(
     },
   }
 );
+
+Usuario.prototype.verificarPassword = function (password: string) {
+  return bcrypt.compareSync(password, this.password);
+};
 
 export default Usuario;

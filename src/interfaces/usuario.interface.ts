@@ -1,4 +1,6 @@
-export interface UsuarioInterface {
+import { Model } from "sequelize";
+
+export interface UsuarioInterface extends Model {
   id: number;
   nombre: string;
   email: string;
