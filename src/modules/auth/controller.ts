@@ -29,7 +29,7 @@ export const autenticar = async (req: csrfRequest, res: Response) => {
   }
   const { password, email } = req.body;
 
-  const usuario = await Usuario.findOne({ where: { email } });
+  const usuario: UsuarioInterface = await servicio.buscarUsuarioPorEmail(email);
 
   if (!usuario) {
     return res.render("auth/login", {
@@ -90,8 +90,7 @@ export const registrar = async (req: csrfRequest, res: Response) => {
 
   const { nombre, email, password } = req.body;
 
-  //Verificar que el usuario no este duplicado
-  const existeUsuario = await servicio.existeUsuario(email);
+  const existeUsuario = await servicio.buscarUsuarioPorEmail(email);
 
   if (existeUsuario) {
     return res.render("auth/registro", {
@@ -131,7 +130,7 @@ export const confirmar = async (req: Request, res: Response) => {
 
   // Verificar si e token es valido
 
-  const usuario = await Usuario.findOne({ where: { token } });
+  const usuario: any = await servicio.buscarUsuarioPorToken(token);
 
   if (!usuario) {
     return res.render("auth/confirmar-cuenta", {
@@ -172,11 +171,7 @@ export const resetPassword = async (req: csrfRequest, res: Response) => {
 
   const { email } = req.body;
 
-  console.log(req.body);
-  const existeUsuario: UsuarioInterface = await Usuario.findOne({
-    where: { email },
-  });
-
+  const existeUsuario = await servicio.buscarUsuarioPorEmail(email)
   if (!existeUsuario) {
     return res.render("auth/olvide-password", {
       pagina: "Recuperar tu acceso a BienesRaices",
@@ -205,9 +200,7 @@ export const resetPassword = async (req: csrfRequest, res: Response) => {
 export const comprobarToken = async (req: csrfRequest, res: Response) => {
   const { token } = req.params;
 
-  const usuario: UsuarioInterface = await Usuario.findOne({
-    where: { token },
-  });
+  const usuario: UsuarioInterface = await servicio.buscarUsuarioPorToken(token)
   if (!usuario) {
     return res.render("auth/confirmar-cuenta", {
       pagina: "Reestablece tu password",
@@ -235,7 +228,7 @@ export const nuevoPassword = async (req: csrfRequest, res: Response) => {
 
   const { token } = req.params;
 
-  const usuario = await Usuario.findOne({ where: { token } });
+  const usuario: any = await servicio.buscarUsuarioPorToken(token)
 
   if (!usuario) {
     return res.render("auth/reset-password", {
