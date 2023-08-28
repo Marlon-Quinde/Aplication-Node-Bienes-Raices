@@ -1,21 +1,28 @@
 // const express = require("express"); // Common JS
 import express from "express"; //ES6
+import cookieParser from "cookie-parser";
 import usuarioRoutes from "./modules/auth/routes";
 import db from "./config/db";
 import path from "path";
 import { BACKEND_PORT } from "./environments";
 
+const csrf = require("@dr.pogodin/csurf");
 // Crear la App
 const app = express();
+const csrfProtection = csrf({ cookie: true });
 
 //Habilitar lectura datos de formulario
 app.use(express.urlencoded({ extended: true }));
+
+// Habilitar el Coocke Paser
+app.use(cookieParser());
+app.use(csrfProtection);
 
 //Conexion a db
 async function main() {
   try {
     await db.authenticate();
-    // await db.sync();
+    await db.sync();
     console.log("conexion correcta");
   } catch (error) {
     console.log(error);
