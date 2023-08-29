@@ -1,6 +1,6 @@
 import { check, validationResult } from "express-validator";
 import Usuario from "../../models/Usuario";
-import { generarId } from "../../helpers/tokens";
+import { generarId, generarToken } from "../../helpers/tokens";
 import { emailOlvidePassowrd, emailRegistro } from "../../helpers/email";
 import { Request, Response, NextFunction } from "express";
 import { UsuarioInterface } from "../../interfaces/usuario.interface";
@@ -29,14 +29,16 @@ export const autenticar = async (req: csrfRequest, res: Response) => {
   }
   const { password, email } = req.body;
 
-  const usuario = await Usuario.findOne({ where: { email } });
+  const usuario: any = await servicio.existeUsuario(email);
 
   if (!usuario) {
-    return res.render("auth/login", {
-      pagina: "Iniciar sesión",
-      csrfToken: req.csrfToken!(),
-      errores: [{ msg: "Ese usuario no existe" }],
-    });
+    return servicio.renderLoginPage(
+      res,
+      "auth/login",
+      "Iniciar sesion",
+      req.csrfToken!(),
+      [{ msg: "Ese usuario no existe" }]
+    );
   }
   if (!usuario.confirmado) {
     return res.render("auth/login", {
@@ -54,12 +56,17 @@ export const autenticar = async (req: csrfRequest, res: Response) => {
     });
   }
 
-  return res.render("auth/login", {
-    pagina: "Iniciar sesión",
-    csrfToken: req.csrfToken!(),
-    errores: [{ msg: "Contraseña Correcta" }],
-  });
+  const token = generarToken(usuario.id);
+
+  //Almacenar en el cookie
+  res
+    .cookie("_token", token, {
+      httpOnly: true,
+      // secure: true
+    })
+    .redirect("/mis-propiedades");
 };
+
 export const formularioRegistro = (req: csrfRequest, res: Response) => {
   // console.log("[TOKEN]", req.csrfToken!());
   // console.log("[Body]", req.body);
