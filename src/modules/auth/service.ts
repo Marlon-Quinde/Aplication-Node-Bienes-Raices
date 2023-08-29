@@ -1,3 +1,4 @@
+import { Response } from "express";
 import { UserRepository } from "./repository";
 export default class AuthService {
   private readonly userRepository: UserRepository;
@@ -12,5 +13,21 @@ export default class AuthService {
 
   async buscarUsuarioPorToken(token: string){
     return this.userRepository.buscarUsuarioPorToken(token);
+  }
+
+
+
+  renderLoginPage(
+    res: Response,
+    ruta: string,
+    pagina: string,
+    csrfToken: string,
+    errores?: any
+  ) {
+    res.render(ruta, {
+      pagina,
+      csrfToken,
+      errores,
+    });
   }
 }
