@@ -1,17 +1,27 @@
-import { UserRepository } from './repository';
+import { Response } from "express";
+import { UserRepository } from "./repository";
 export default class AuthService {
-    private readonly userRepository: UserRepository;
+  private readonly userRepository: UserRepository;
 
-    constructor () {
-        this.userRepository = new UserRepository();
-    }
+  constructor() {
+    this.userRepository = new UserRepository();
+  }
 
-    validarSuma(numero1: number, numero2: number){
-        return numero1.toString() + numero2.toString();
-    }
+  async existeUsuario(email: string) {
+    return await this.userRepository.existeUsuario(email);
+  }
 
-
-    async existeUsuario (email: string) {
-         return await this.userRepository.existeUsuario(email)
-    }
+  renderLoginPage(
+    res: Response,
+    ruta: string,
+    pagina: string,
+    csrfToken: string,
+    errores?: any
+  ) {
+    res.render(ruta, {
+      pagina,
+      csrfToken,
+      errores,
+    });
+  }
 }
