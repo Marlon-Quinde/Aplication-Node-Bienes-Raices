@@ -1,59 +1,68 @@
+import { csrfRequest } from './../../interfaces/crsf.interface';
 import { check, validationResult } from "express-validator";
 import Usuario from "../../models/Usuario";
 import { generarId, generarToken } from "../../helpers/tokens";
 import { emailOlvidePassowrd, emailRegistro } from "../../helpers/email";
 import { Request, Response, NextFunction } from "express";
 import { UsuarioInterface } from "../../interfaces/usuario.interface";
-import { csrfRequest } from "../../interfaces/crsf.interface";
 import bcrypt from "bcrypt";
 import AuthService from "./service";
+import { PropertiesRender } from "../../interfaces/render.interface";
 
-const servicio = new AuthService();
+const authService = new AuthService();
 
 export const formularioLogin = (req: csrfRequest, res: Response) => {
-  res.render("auth/login", {
-    pagina: "Iniciar Sesion",
+  const ctx: PropertiesRender = {
+    pagina: "Iniciar Sesión",
     csrfToken: req.csrfToken!(),
-  });
+  }
+  authService.renderLoginPage(res, "auth/login", ctx);
 };
 
 export const autenticar = async (req: csrfRequest, res: Response) => {
   let resultado = validationResult(req);
 
   if (!resultado.isEmpty()) {
-    res.render("auth/login", {
-      pagina: "Iniciar sesión",
+    const ctx: PropertiesRender = {
+      pagina: 'Iniciar Sesión',
       csrfToken: req.csrfToken!(),
-      errores: resultado.array(),
-    });
+      errores: resultado.array()
+    }
+    return authService.renderLoginPage(res, "auth/login", ctx)
   }
   const { password, email } = req.body;
 
-  const usuario: any = await servicio.buscarUsuarioPorEmail(email);
+  const usuario: any = await authService.buscarUsuarioPorEmail(email);
 
   if (!usuario) {
-    return servicio.renderLoginPage(
+    const cnx: PropertiesRender = {
+     pagina: "Iniciar sesion",
+     csrfToken: req.csrfToken!(),
+     errores: [{ msg: "Ese usuario no existe" }]
+    }
+    return authService.renderLoginPage(
       res,
       "auth/login",
-      "Iniciar sesion",
-      req.csrfToken!(),
-      [{ msg: "Ese usuario no existe" }]
+      cnx
     );
   }
+
   if (!usuario.confirmado) {
-    return res.render("auth/login", {
-      pagina: "Iniciar sesión",
+    const ctx: PropertiesRender = {
+      pagina: "Iniciar Sesión",
       csrfToken: req.csrfToken!(),
-      errores: [{ msg: "Tiene un correo pendiente de verificación" }],
-    });
+      errores: [{ msg: "Tiene un correo pendiente de verificación" }]
+    }
+    return authService.renderLoginPage(res, "auth/login", ctx)
   }
 
   if (!usuario.verificarPassword(password)) {
-    return res.render("auth/login", {
-      pagina: "Iniciar sesión",
+    const ctx: PropertiesRender = {
+      pagina: "Iniciar Sesión",
       csrfToken: req.csrfToken!(),
-      errores: [{ msg: "Contraseña Incorrecta" }],
-    });
+      errores: [{ msg: "Contraseña Incorrecta" }]
+    }
+    return authService.renderLoginPage(res, "auth/login", ctx)
   }
 
   const token = generarToken(usuario.id);
@@ -68,12 +77,11 @@ export const autenticar = async (req: csrfRequest, res: Response) => {
 };
 
 export const formularioRegistro = (req: csrfRequest, res: Response) => {
-  // console.log("[TOKEN]", req.csrfToken!());
-  // console.log("[Body]", req.body);
-  res.render("auth/registro", {
-    pagina: "Crear cuenta",
-    csrfToken: req.csrfToken!(),
-  });
+  const ctx: PropertiesRender = {
+    pagina: "Crear Cuenta",
+    csrfToken: req.csrfToken!()
+  }
+  authService.renderLoginPage(res, "auth/registro", ctx);
 };
 
 export const registrar = async (req: csrfRequest, res: Response) => {
@@ -83,8 +91,7 @@ export const registrar = async (req: csrfRequest, res: Response) => {
 
   //Verificar que el resultado esta vacio
   if (!resultado.isEmpty()) {
-    //Errores
-    return res.render("auth/registro", {
+    const ctx: PropertiesRender = {
       pagina: "Crear cuenta",
       csrfToken: req.csrfToken!(),
       errores: resultado.array(),
@@ -92,15 +99,17 @@ export const registrar = async (req: csrfRequest, res: Response) => {
         nombre: req.body.nombre,
         email: req.body.email,
       },
-    });
+    }
+    //Errores
+    return authService.renderLoginPage(res, "auth/registro", ctx);
   }
 
   const { nombre, email, password } = req.body;
 
-  const existeUsuario = await servicio.buscarUsuarioPorEmail(email);
+  const existeUsuario = await authService.buscarUsuarioPorEmail(email);
 
   if (existeUsuario) {
-    return res.render("auth/registro", {
+    const ctx: PropertiesRender = {
       pagina: "Crear cuenta",
       csrfToken: req.csrfToken!(),
       errores: [{ msg: "El usuario ya esta registrado" }],
@@ -108,7 +117,8 @@ export const registrar = async (req: csrfRequest, res: Response) => {
         nombre: req.body.nombre,
         email: req.body.email,
       },
-    });
+    }
+    return authService.renderLoginPage(res ,"auth/registro", ctx);
   }
 
   // Almacenar usuario
@@ -137,7 +147,7 @@ export const confirmar = async (req: Request, res: Response) => {
 
   // Verificar si e token es valido
 
-  const usuario: any = await servicio.buscarUsuarioPorToken(token);
+  const usuario: any = await authService.buscarUsuarioPorToken(token);
 
   if (!usuario) {
     return res.render("auth/confirmar-cuenta", {
@@ -178,7 +188,7 @@ export const resetPassword = async (req: csrfRequest, res: Response) => {
 
   const { email } = req.body;
 
-  const existeUsuario = await servicio.buscarUsuarioPorEmail(email)
+  const existeUsuario = await authService.buscarUsuarioPorEmail(email)
   if (!existeUsuario) {
     return res.render("auth/olvide-password", {
       pagina: "Recuperar tu acceso a BienesRaices",
@@ -207,7 +217,7 @@ export const resetPassword = async (req: csrfRequest, res: Response) => {
 export const comprobarToken = async (req: csrfRequest, res: Response) => {
   const { token } = req.params;
 
-  const usuario: UsuarioInterface = await servicio.buscarUsuarioPorToken(token)
+  const usuario: UsuarioInterface = await authService.buscarUsuarioPorToken(token)
   if (!usuario) {
     return res.render("auth/confirmar-cuenta", {
       pagina: "Reestablece tu password",
@@ -235,7 +245,7 @@ export const nuevoPassword = async (req: csrfRequest, res: Response) => {
 
   const { token } = req.params;
 
-  const usuario: any = await servicio.buscarUsuarioPorToken(token)
+  const usuario: any = await authService.buscarUsuarioPorToken(token)
 
   if (!usuario) {
     return res.render("auth/reset-password", {

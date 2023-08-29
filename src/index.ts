@@ -2,6 +2,7 @@
 import express from "express"; //ES6
 import cookieParser from "cookie-parser";
 import usuarioRoutes from "./modules/auth/routes";
+import propiedadesRouter from "./modules/propiedades/routes";
 import db from "./config/db";
 import path from "path";
 import { BACKEND_PORT } from "./environments";
@@ -46,6 +47,7 @@ app.use(express.static("public"));
 
 // Routing
 app.use("/auth", usuarioRoutes);
+app.use("/", propiedadesRouter);
 
 //?Definir un puerto y arrancar el proyecto
 const port = BACKEND_PORT || 3000;

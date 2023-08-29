@@ -1,5 +1,6 @@
 import { Response } from "express";
 import { UserRepository } from "./repository";
+import { PropertiesRender } from "../../interfaces/render.interface";
 export default class AuthService {
   private readonly userRepository: UserRepository;
 
@@ -20,14 +21,10 @@ export default class AuthService {
   renderLoginPage(
     res: Response,
     ruta: string,
-    pagina: string,
-    csrfToken: string,
-    errores?: any
+    ctx: PropertiesRender
   ) {
     res.render(ruta, {
-      pagina,
-      csrfToken,
-      errores,
+     ...ctx
     });
   }
 }
