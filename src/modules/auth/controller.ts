@@ -1,4 +1,4 @@
-import { csrfRequest } from './../../interfaces/crsf.interface';
+import { csrfRequest } from "./../../interfaces/crsf.interface";
 import { check, validationResult } from "express-validator";
 import Usuario from "../../models/Usuario";
 import { generarId, generarToken } from "../../helpers/tokens";
@@ -15,7 +15,7 @@ export const formularioLogin = (req: csrfRequest, res: Response) => {
   const ctx: PropertiesRender = {
     pagina: "Iniciar Sesión",
     csrfToken: req.csrfToken!(),
-  }
+  };
   authService.renderLoginPage(res, "auth/login", ctx);
 };
 
@@ -24,11 +24,11 @@ export const autenticar = async (req: csrfRequest, res: Response) => {
 
   if (!resultado.isEmpty()) {
     const ctx: PropertiesRender = {
-      pagina: 'Iniciar Sesión',
+      pagina: "Iniciar Sesión",
       csrfToken: req.csrfToken!(),
-      errores: resultado.array()
-    }
-    return authService.renderLoginPage(res, "auth/login", ctx)
+      errores: resultado.array(),
+    };
+    return authService.renderLoginPage(res, "auth/login", ctx);
   }
   const { password, email } = req.body;
 
@@ -36,33 +36,29 @@ export const autenticar = async (req: csrfRequest, res: Response) => {
 
   if (!usuario) {
     const cnx: PropertiesRender = {
-     pagina: "Iniciar sesion",
-     csrfToken: req.csrfToken!(),
-     errores: [{ msg: "Ese usuario no existe" }]
-    }
-    return authService.renderLoginPage(
-      res,
-      "auth/login",
-      cnx
-    );
+      pagina: "Iniciar sesion",
+      csrfToken: req.csrfToken!(),
+      errores: [{ msg: "Ese usuario no existe" }],
+    };
+    return authService.renderLoginPage(res, "auth/login", cnx);
   }
 
   if (!usuario.confirmado) {
     const ctx: PropertiesRender = {
       pagina: "Iniciar Sesión",
       csrfToken: req.csrfToken!(),
-      errores: [{ msg: "Tiene un correo pendiente de verificación" }]
-    }
-    return authService.renderLoginPage(res, "auth/login", ctx)
+      errores: [{ msg: "Tiene un correo pendiente de verificación" }],
+    };
+    return authService.renderLoginPage(res, "auth/login", ctx);
   }
 
   if (!usuario.verificarPassword(password)) {
     const ctx: PropertiesRender = {
       pagina: "Iniciar Sesión",
       csrfToken: req.csrfToken!(),
-      errores: [{ msg: "Contraseña Incorrecta" }]
-    }
-    return authService.renderLoginPage(res, "auth/login", ctx)
+      errores: [{ msg: "Contraseña Incorrecta" }],
+    };
+    return authService.renderLoginPage(res, "auth/login", ctx);
   }
 
   const token = generarToken(usuario.id);
@@ -79,8 +75,8 @@ export const autenticar = async (req: csrfRequest, res: Response) => {
 export const formularioRegistro = (req: csrfRequest, res: Response) => {
   const ctx: PropertiesRender = {
     pagina: "Crear Cuenta",
-    csrfToken: req.csrfToken!()
-  }
+    csrfToken: req.csrfToken!(),
+  };
   authService.renderLoginPage(res, "auth/registro", ctx);
 };
 
@@ -99,7 +95,7 @@ export const registrar = async (req: csrfRequest, res: Response) => {
         nombre: req.body.nombre,
         email: req.body.email,
       },
-    }
+    };
     //Errores
     return authService.renderLoginPage(res, "auth/registro", ctx);
   }
@@ -117,8 +113,8 @@ export const registrar = async (req: csrfRequest, res: Response) => {
         nombre: req.body.nombre,
         email: req.body.email,
       },
-    }
-    return authService.renderLoginPage(res ,"auth/registro", ctx);
+    };
+    return authService.renderLoginPage(res, "auth/registro", ctx);
   }
 
   // Almacenar usuario
@@ -136,10 +132,12 @@ export const registrar = async (req: csrfRequest, res: Response) => {
     token: usuario.token,
   });
 
-  res.render("templates/mensaje", {
+  const ctx: PropertiesRender = {
     pagina: "Cuenta Creada Correctamente",
     mensaje: "Hemos enviado un Email de Confirmación",
-  });
+  };
+
+  authService.renderLoginPage(res, "templates/mensaje", ctx);
 };
 
 export const confirmar = async (req: Request, res: Response) => {
@@ -150,51 +148,57 @@ export const confirmar = async (req: Request, res: Response) => {
   const usuario: any = await authService.buscarUsuarioPorToken(token);
 
   if (!usuario) {
-    return res.render("auth/confirmar-cuenta", {
+    const ctx: PropertiesRender = {
       pagina: "Error al confirmar tu cuenta",
       mensaje: "Hubo un error al confirmar cuenta, intenta de nuevo",
       error: true,
-    });
+    };
+    return authService.renderLoginPage(res, "auth/confirmar-cuenta", ctx);
   }
 
   usuario.token = null;
   usuario.confirmado = true;
 
   await usuario.save();
-  return res.render("auth/confirmar-cuenta", {
-    pagina: "Cuenta confirmada",
+
+  const ctx: PropertiesRender = {
+    pagina: "Cuenta Confirmada",
     mensaje: "La cuenta se confirmo exitosamente",
-  });
+  };
+  authService.renderLoginPage(res, "auth/confirmar-cuenta", ctx);
   // Confirmar la cuenta
 };
 
 export const formularioOlvidePassword = (req: csrfRequest, res: Response) => {
-  res.render("auth/olvide-password", {
+  const ctx: PropertiesRender = {
     csrfToken: req.csrfToken!(),
     pagina: "Recupera tu contraseña de BienesRaices",
-  });
+  };
+  authService.renderLoginPage(res, "auth/olvide-password", ctx);
 };
 
 export const resetPassword = async (req: csrfRequest, res: Response) => {
   let resultado = validationResult(req);
 
   if (!resultado.isEmpty()) {
-    return res.render("auth/olvide-password", {
+    const ctx: PropertiesRender = {
       pagina: "Recuperar tu acceso a BienesRaices",
       csrfToken: req.csrfToken!(),
       errores: resultado.array(),
-    });
+    };
+    return authService.renderLoginPage(res, "auth/olvide-password", ctx);
   }
 
   const { email } = req.body;
 
-  const existeUsuario = await authService.buscarUsuarioPorEmail(email)
+  const existeUsuario = await authService.buscarUsuarioPorEmail(email);
   if (!existeUsuario) {
-    return res.render("auth/olvide-password", {
+    const ctx: PropertiesRender = {
       pagina: "Recuperar tu acceso a BienesRaices",
       csrfToken: req.csrfToken!(),
       errores: [{ msg: "No existe un usuario con ese correo" }],
-    });
+    };
+    return authService.renderLoginPage(res, "auth/olvide-password", ctx);
   }
 
   const nuevoToken = generarId();
@@ -207,17 +211,21 @@ export const resetPassword = async (req: csrfRequest, res: Response) => {
     token: nuevoToken,
   });
 
-  res.render("templates/mensaje", {
+  const ctx: PropertiesRender = {
     pagina: "Restablece tu password",
     mensaje:
       "Hemos enviado un Email de con las instrucciones, presiona en el enlace",
-  });
+  };
+
+  authService.renderLoginPage(res, "templates/mensaje", ctx);
 };
 
 export const comprobarToken = async (req: csrfRequest, res: Response) => {
   const { token } = req.params;
 
-  const usuario: UsuarioInterface = await authService.buscarUsuarioPorToken(token)
+  const usuario: UsuarioInterface = await authService.buscarUsuarioPorToken(
+    token
+  );
   if (!usuario) {
     return res.render("auth/confirmar-cuenta", {
       pagina: "Reestablece tu password",
@@ -245,7 +253,7 @@ export const nuevoPassword = async (req: csrfRequest, res: Response) => {
 
   const { token } = req.params;
 
-  const usuario: any = await authService.buscarUsuarioPorToken(token)
+  const usuario: any = await authService.buscarUsuarioPorToken(token);
 
   if (!usuario) {
     return res.render("auth/reset-password", {
