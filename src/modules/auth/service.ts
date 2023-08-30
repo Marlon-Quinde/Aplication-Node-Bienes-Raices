@@ -1,17 +1,30 @@
-import { UserRepository } from './repository';
+import { Response } from "express";
+import { UserRepository } from "./repository";
+import { PropertiesRender } from "../../interfaces/render.interface";
 export default class AuthService {
-    private readonly userRepository: UserRepository;
+  private readonly userRepository: UserRepository;
 
-    constructor () {
-        this.userRepository = new UserRepository();
-    }
+  constructor() {
+    this.userRepository = new UserRepository();
+  }
 
-    validarSuma(numero1: number, numero2: number){
-        return numero1.toString() + numero2.toString();
-    }
+  async buscarUsuarioPorEmail(email: string) {
+    return await this.userRepository.buscarUsuarioPorEmail(email);
+  }
+
+  async buscarUsuarioPorToken(token: string){
+    return this.userRepository.buscarUsuarioPorToken(token);
+  }
 
 
-    async existeUsuario (email: string) {
-         return await this.userRepository.existeUsuario(email)
-    }
+
+  renderLoginPage(
+    res: Response,
+    ruta: string,
+    ctx: PropertiesRender
+  ) {
+    res.render(ruta, {
+     ...ctx
+    });
+  }
 }

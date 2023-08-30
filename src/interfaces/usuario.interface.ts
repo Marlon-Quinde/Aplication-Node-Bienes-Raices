@@ -9,4 +9,5 @@ export interface UsuarioInterface extends Model {
   confirmado: boolean;
   createdAt: Date;
   updatedAt: Date;
+  verificarPassword: (password: string) => boolean
 }
