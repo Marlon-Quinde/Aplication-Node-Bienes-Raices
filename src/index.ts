@@ -42,8 +42,8 @@ const viewsPath = path.join(__dirname, "views");
 app.set("view engine", "pug");
 app.set("views", viewsPath);
 
-app.use(express.static("public"));
 //Carpeta Publica
+app.use(express.static("public"));
 
 // Routing
 app.use("/auth", usuarioRoutes);

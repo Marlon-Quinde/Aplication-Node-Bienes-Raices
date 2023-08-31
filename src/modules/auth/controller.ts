@@ -227,28 +227,33 @@ export const comprobarToken = async (req: csrfRequest, res: Response) => {
     token
   );
   if (!usuario) {
-    return res.render("auth/confirmar-cuenta", {
+    const ctx: PropertiesRender = {
       pagina: "Reestablece tu password",
       mensaje: "Hubo un error al validar tu información, intenta de nuevo",
       error: true,
-    });
-  }
+    }    
 
-  res.render("auth/reset-password", {
+    return authService.renderLoginPage(res, "auth/confirmar-cuenta", ctx);
+  }
+  
+  const ctx: PropertiesRender = {
     pagina: "Reestablece tu password",
     csrfToken: req.csrfToken!(),
-  });
+  }
+  return authService.renderLoginPage(res, "auth/reset-password", ctx);
 };
 
 export const nuevoPassword = async (req: csrfRequest, res: Response) => {
   let resultado = validationResult(req);
 
   if (!resultado.isEmpty()) {
-    return res.render("auth/reset-password", {
+    const ctx: PropertiesRender = {
       pagina: "Reestablece tu password",
       csrfToken: req.csrfToken!(),
       errores: resultado.array(),
-    });
+    }
+
+    return authService.renderLoginPage(res, "auth/reset-password", ctx);
   }
 
   const { token } = req.params;
@@ -256,11 +261,12 @@ export const nuevoPassword = async (req: csrfRequest, res: Response) => {
   const usuario: any = await authService.buscarUsuarioPorToken(token);
 
   if (!usuario) {
-    return res.render("auth/reset-password", {
+    const ctx: PropertiesRender = {
       pagina: "Reestablece tu password",
       csrfToken: req.csrfToken!(),
       errores: [{ msg: "No existe ningun usuario con ese token" }],
-    });
+    }
+    return authService.renderLoginPage(res, "auth/reset-password", ctx);
   }
 
   const { password } = req.body;
@@ -269,9 +275,10 @@ export const nuevoPassword = async (req: csrfRequest, res: Response) => {
   usuario.token = null;
 
   await usuario.save();
-
-  return res.render("auth/confirmar-cuenta", {
+  const ctx: PropertiesRender = {
     pagina: "Password Reestablecido",
     mensaje: "El password se guardo correctamente",
-  });
+  }
+
+  authService.renderLoginPage(res, "auth/confirmar-cuenta", ctx);
 };
