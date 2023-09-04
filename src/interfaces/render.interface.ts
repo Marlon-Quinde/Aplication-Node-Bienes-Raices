@@ -5,4 +5,5 @@ export interface PropertiesRender {
   errores?: Record<string, unknown>[];
   usuario?: Record<string, string>;
   error?: boolean;
+  barra?: boolean;
 }
