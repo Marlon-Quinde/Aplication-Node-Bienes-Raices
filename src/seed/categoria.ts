@@ -1,6 +1,4 @@
-import { CategoriaInterface } from "../interfaces/categoria.interface";
-
-export const categorias: any = [
+const categorias = [
   {
     nombre: "Casa",
   },
@@ -17,3 +15,5 @@ export const categorias: any = [
     nombre: "Cabaña",
   },
 ];
+
+export default categorias;

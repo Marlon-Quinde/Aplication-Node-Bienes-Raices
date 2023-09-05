@@ -1,8 +1,6 @@
-import { exit } from "node:process";
-import { categorias } from "./categoria.ts";
-import Categoria from "../models/Categoria.ts";
-import db from "../config/db.ts";
-
+import categorias from "./categoria";
+import Categoria from "../models/Categoria";
+import db from "../config/db";
 const importarDatos = async () => {
   try {
     //Autenticar en la base de datos
@@ -15,10 +13,10 @@ const importarDatos = async () => {
     //Insertar los datos
     await Categoria.bulkCreate(categorias);
     console.log("Datos importados correctamente");
-    exit(0);
+    process.exit(0);
   } catch (error) {
     console.log(error);
-    exit(1);
+    process.exit(1);
   }
 };
 
