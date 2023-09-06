@@ -25,6 +25,8 @@ block contenido
                         label(class="block text-sm uppercase text-gray-500 mb-2 font-bold" for="categoria") Categoria
                         select#catergoria(class="w-full px-3 py-2 border border-gray-300 rounded-md placeholder-gray-400" name="categoria")
                             option(value="") - Seleccione -
+                            each categoria in categorias
+                                option(value=categoria.id)= categoria.nombre
                     div(class="md:w-1/2")
                         label(class="block text-sm uppercase text-gray-500 mb-2 font-bold" for="precio") Precio
                         select#precio(class="w-full px-3 py-2 border border-gray-300 rounded-md placeholder-gray-400" name="precio")

@@ -11,7 +11,8 @@
     "js": "webpack --watch",
     "tsc": "tsc",
     "watch": "concurrently \"npm run js\" \"npm run css\"",
-    "db:importar": "ts-node ./src/seed/seeder.ts -i"
+    "db:importar": "ts-node ./src/seed/seeder.ts -i",
+    "db:eliminar": "ts-node ./src/seed/seeder.ts -e"
   },
   "keywords": [
     "MVC",
