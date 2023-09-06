@@ -9,6 +9,6 @@ export interface PropertiesRender {
   usuario?: Record<string, string>;
   error?: boolean;
   barra?: boolean;
-  categorias?: CategoriaInterface[] | any[];
-  precios?: PrecioInterface[] | any[];
+  categorias?: CategoriaInterface[];
+  precios?: PrecioInterface[];
 }

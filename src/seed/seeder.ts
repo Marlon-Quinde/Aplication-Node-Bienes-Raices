@@ -1,8 +1,7 @@
 import categorias from "./categoria";
 import { exit } from "process";
-import Categoria from "../models/Categoria";
+import {Categoria , Precio } from "../models/index";
 import precios from "./precios";
-import Precio from "../models/Precio";
 import db from "../config/db";
 const importarDatos = async () => {
   try {
@@ -33,7 +32,7 @@ const eliminarDatos = async () => {
       Precio.destroy({ where: {}, truncate: true }),
     ]);
 
-    //await db.sync({ force: true });
+    // await db.sync({ force: true });
     console.log("Datos eliminados correctmente");
     exit(0);
   } catch (error) {
