@@ -1,7 +1,7 @@
 import { DataTypes } from "sequelize";
 import db  from "../config/db";
 
-const Propiedad = db.define('propiedad',{
+const Propiedad = db.define('propiedades',{
     id: {
         type: DataTypes.UUID,
         defaultValue: DataTypes.UUIDV4,

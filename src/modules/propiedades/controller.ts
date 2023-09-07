@@ -19,14 +19,14 @@ export const crear = async (req: Request, res: Response) => {
   // Consultar modelo de precios y categorias
   const [categorias, precios]: [Model<any, any>[], Model<any, any>[]] =
     await propiedadesService.getCategoriasYPrecios();
-  categorias.map((e) => e.dataValues);
-  precios.map((e) => e.dataValues);
+  const category = categorias.map((e) => e.dataValues);
+  const price = precios.map((e) => e.dataValues);
 
   const ctx: PropertiesRender = {
     pagina: "Crear Propiedad",
     barra: true,
-    categorias: categorias as any,
-    precios: precios as any,
+    categorias: category,
+    precios: price,
   };
   propiedadesService.renderPagePropiedades(res, "propiedades/crear", ctx);
 };
