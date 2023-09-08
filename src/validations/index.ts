@@ -25,3 +25,9 @@ export const validarLogin = [
   body("password", "La contraseña es requerida").exists().notEmpty(),
   body("email", "Eso no parece un email").exists().isEmail(),
 ];
+
+
+export const validarCrearPropiedad = [
+  body("titulo", "El titulo del anuncio es obligatorio").notEmpty(),
+  body("descripcion", )
+];

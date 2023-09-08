@@ -8,7 +8,8 @@ block contenido
     h2(class="text-center text-2xl font-extrabold")=pagina
     
     div(class="bg-white shadow py-8 px-4 rounded-sm mx-auto max-w-4xl my-10 md:px-10")
-        form(class="space-y-8")
+        form(class="space-y-8" method="POST" action="/propiedades/crear")
+            input(type="hidden" name="_csrf" value=csrfToken)
             div(class="space-y-5")
                 h3(class="text-lg leading-6 font-medium text-gray-900") Información General
                 p(class="text-gray-600") Añade información sobre la propiedad en venta
@@ -65,6 +66,8 @@ block contenido
                     input(type="hidden" name="calle" id="calle")
                     input(type="hidden" name="lat" id="lat")
                     input(type="hidden" name="lng" id="lng")
+
+                input(type="submit" class="w-full py-3 bg-indigo-600 hover:bg-indigo-700 rounded text-white font-bold uppercase cursor-pointer" value="Añadir imagen")
 block script 
     script(src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js")
     script(src="https://unpkg.com/esri-leaflet@3.0.8/dist/esri-leaflet.js")
