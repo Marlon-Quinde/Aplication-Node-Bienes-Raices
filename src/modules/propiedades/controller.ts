@@ -30,6 +30,7 @@ export const crear = async (req: csrfRequest, res: Response) => {
     csrfToken: req.csrfToken!(),
     categorias: category,
     precios: price,
+    datos: {},
   };
   propiedadesService.renderPagePropiedades(res, "propiedades/crear", ctx);
 };
@@ -48,9 +49,14 @@ export const guardar = async (req: csrfRequest, res: Response) => {
       csrfToken: req.csrfToken!(),
       categorias: category,
       precios: price,
-      errores: resultado.array()
+      errores: resultado.array(),
+      datos: req.body,
     };
-    propiedadesService.renderPagePropiedades(res, 'propiedades/crear', ctx);
+    return propiedadesService.renderPagePropiedades(
+      res,
+      "propiedades/crear",
+      ctx
+    );
   }
   console.log("HOLA MUNDO");
 };
