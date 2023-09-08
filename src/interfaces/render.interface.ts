@@ -1,5 +1,6 @@
 import { CategoriaInterface } from "./categoria.interface";
 import { PrecioInterface } from "./precio.interface";
+import { body } from "express-validator";
 
 export interface PropertiesRender {
   pagina: string;
@@ -11,4 +12,5 @@ export interface PropertiesRender {
   barra?: boolean;
   categorias?: CategoriaInterface[];
   precios?: PrecioInterface[];
+  datos?: object;
 }
