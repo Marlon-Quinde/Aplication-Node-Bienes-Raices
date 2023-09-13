@@ -96,3 +96,10 @@ export const guardar = async (req: csrfRequest, res: Response) => {
   }
   // console.log(req.body);
 };
+
+export const agregarImagen = async (req: csrfRequest, res: Response) => {
+  const ctx: PropertiesRender = {
+    pagina: "Añade tu Imagen",
+  };
+  propiedadesService.renderPagePropiedades(res, "", ctx);
+};
