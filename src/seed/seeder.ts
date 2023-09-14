@@ -1,8 +1,9 @@
 import categorias from "./categoria";
 import { exit } from "process";
-import {Categoria , Precio } from "../models/index";
+import { Categoria, Precio, Usuario } from "../models/index";
 import precios from "./precios";
 import db from "../config/db";
+import usuarios from "./usuarios";
 const importarDatos = async () => {
   try {
     //Autenticar en la base de datos
@@ -16,6 +17,7 @@ const importarDatos = async () => {
     await Promise.all([
       Categoria.bulkCreate(categorias),
       Precio.bulkCreate(precios),
+      Usuario.bulkCreate(usuarios),
     ]);
     console.log("Datos importados correctamente");
     exit(0);
@@ -27,12 +29,12 @@ const importarDatos = async () => {
 
 const eliminarDatos = async () => {
   try {
-    await Promise.all([
-      Categoria.destroy({ where: {}, truncate: true }),
-      Precio.destroy({ where: {}, truncate: true }),
-    ]);
+    // await Promise.all([
+    //   Categoria.destroy({ where: {}, truncate: true }),
+    //   Precio.destroy({ where: {}, truncate: true }),
+    // ]);
 
-    // await db.sync({ force: true });
+    await db.sync({ force: true });
     console.log("Datos eliminados correctmente");
     exit(0);
   } catch (error) {

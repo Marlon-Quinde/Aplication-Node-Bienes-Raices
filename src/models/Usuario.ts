@@ -27,10 +27,23 @@ const Usuario = db.define(
         usuario.password = await bcrypt.hash(usuario.password, salt);
       },
     },
+    scopes: {
+      eliminarPassword: {
+        attributes: {
+          exclude: [
+            "password",
+            "token",
+            "confirmado",
+            "createdAt",
+            "updatedAt",
+          ],
+        },
+      },
+    },
   }
 );
 
-//TODO: Crear un helper 
+//TODO: Crear un helper
 Usuario.prototype.verificarPassword = function (password: string) {
   return bcrypt.compareSync(password, this.password);
 };

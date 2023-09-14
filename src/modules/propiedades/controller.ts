@@ -1,12 +1,10 @@
 import { Request, Response } from "express";
 import { PropiedadesService } from "./service";
 import { PropertiesRender } from "../../interfaces/render.interface";
-import Categoria from "../../models/Categoria";
-import Precio from "../../models/Precio";
-import { CategoriaInterface } from "../../interfaces/categoria.interface";
-import { Model } from "sequelize";
 import { validationResult } from "express-validator";
 import { csrfRequest } from "../../interfaces/crsf.interface";
+import { Precio, Categoria, Propiedad } from "../../models/index";
+import { PropiedadInterface } from "../../interfaces/propiedad.interface";
 
 const propiedadesService = new PropiedadesService();
 export const admin = (req: Request, res: Response) => {
@@ -58,5 +56,50 @@ export const guardar = async (req: csrfRequest, res: Response) => {
       ctx
     );
   }
-  console.log("HOLA MUNDO");
+
+  const {
+    titulo,
+    descripcion,
+    categoria: categoriaId,
+    habitaciones,
+    estacionamiento,
+    wc,
+    precio: precioId,
+    calle,
+    lat,
+    lng,
+  } = req.body as PropiedadInterface;
+
+  const { id: usuarioId } = (req as any).usuario;
+
+  try {
+    const propiedadAlmacenada = await Propiedad.create({
+      titulo,
+      descripcion,
+      habitaciones,
+      estacionamiento,
+      wc,
+      categoriaId,
+      usuarioId,
+      precioId,
+      calle,
+      lat,
+      lng,
+      imagen: "",
+    });
+
+    const { id } = propiedadAlmacenada.dataValues;
+
+    res.redirect(`/propiedades/agregar-imagen/${id}`);
+  } catch (error) {
+    console.log(error);
+  }
+  // console.log(req.body);
+};
+
+export const agregarImagen = async (req: csrfRequest, res: Response) => {
+  const ctx: PropertiesRender = {
+    pagina: "Añade tu Imagen",
+  };
+  propiedadesService.renderPagePropiedades(res, "", ctx);
 };

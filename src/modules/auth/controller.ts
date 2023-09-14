@@ -61,7 +61,7 @@ export const autenticar = async (req: csrfRequest, res: Response) => {
     return authService.renderLoginPage(res, "auth/login", ctx);
   }
 
-  const token = generarToken(usuario.id);
+  const token = generarToken(usuario.id, usuario.nombre);
 
   //Almacenar en el cookie
   res
@@ -231,15 +231,15 @@ export const comprobarToken = async (req: csrfRequest, res: Response) => {
       pagina: "Reestablece tu password",
       mensaje: "Hubo un error al validar tu información, intenta de nuevo",
       error: true,
-    }    
+    };
 
     return authService.renderLoginPage(res, "auth/confirmar-cuenta", ctx);
   }
-  
+
   const ctx: PropertiesRender = {
     pagina: "Reestablece tu password",
     csrfToken: req.csrfToken!(),
-  }
+  };
   return authService.renderLoginPage(res, "auth/reset-password", ctx);
 };
 
@@ -251,7 +251,7 @@ export const nuevoPassword = async (req: csrfRequest, res: Response) => {
       pagina: "Reestablece tu password",
       csrfToken: req.csrfToken!(),
       errores: resultado.array(),
-    }
+    };
 
     return authService.renderLoginPage(res, "auth/reset-password", ctx);
   }
@@ -265,7 +265,7 @@ export const nuevoPassword = async (req: csrfRequest, res: Response) => {
       pagina: "Reestablece tu password",
       csrfToken: req.csrfToken!(),
       errores: [{ msg: "No existe ningun usuario con ese token" }],
-    }
+    };
     return authService.renderLoginPage(res, "auth/reset-password", ctx);
   }
 
@@ -278,7 +278,7 @@ export const nuevoPassword = async (req: csrfRequest, res: Response) => {
   const ctx: PropertiesRender = {
     pagina: "Password Reestablecido",
     mensaje: "El password se guardo correctamente",
-  }
+  };
 
   authService.renderLoginPage(res, "auth/confirmar-cuenta", ctx);
 };
