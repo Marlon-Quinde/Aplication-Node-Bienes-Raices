@@ -4,6 +4,7 @@ module.exports = {
   mode: "development",
   entry: {
     mapa: "./src/js/mapa.js",
+    agregarImange: "./src/js/agregarImagen.js"
   },
   output: {
     filename: "[name].js",
