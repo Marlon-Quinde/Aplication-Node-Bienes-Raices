@@ -10,7 +10,6 @@ const propiedadesService = new PropiedadesService();
 export const admin = (req: Request, res: Response) => {
   const ctx: PropertiesRender = {
     pagina: "Mis Propiedades",
-    barra: true,
   };
   propiedadesService.renderPagePropiedades(res, "propiedades/admin", ctx);
 };
@@ -24,7 +23,6 @@ export const crear = async (req: csrfRequest, res: Response) => {
 
   const ctx: PropertiesRender = {
     pagina: "Crear Propiedad",
-    barra: true,
     csrfToken: req.csrfToken!(),
     categorias: category,
     precios: price,
@@ -43,7 +41,6 @@ export const guardar = async (req: csrfRequest, res: Response) => {
   if (!resultado.isEmpty()) {
     const ctx: PropertiesRender = {
       pagina: "Crear Propiedad",
-      barra: true,
       csrfToken: req.csrfToken!(),
       categorias: category,
       precios: price,
@@ -99,7 +96,7 @@ export const guardar = async (req: csrfRequest, res: Response) => {
 
 export const agregarImagen = async (req: csrfRequest, res: Response) => {
   const ctx: PropertiesRender = {
-    pagina: "Añade tu Imagen",
+    pagina: "Agregar Imagen",
   };
-  propiedadesService.renderPagePropiedades(res, "", ctx);
+  propiedadesService.renderPagePropiedades(res, "propiedades/agregar-imagen", ctx);
 };
