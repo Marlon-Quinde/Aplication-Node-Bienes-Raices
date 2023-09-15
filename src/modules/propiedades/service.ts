@@ -1,6 +1,8 @@
 import { Response } from "express";
 import { PropertiesRender } from "../../interfaces/render.interface";
 import { PropiedadesRepository } from "./repository";
+import { InferAttributes, InferCreationAttributes, Model } from "sequelize";
+import { UsuarioInterface } from "../../interfaces/usuario.interface";
 
 export class PropiedadesService {
   private readonly propiedadesRepostory: PropiedadesRepository;
@@ -14,5 +16,17 @@ export class PropiedadesService {
 
   async getCategoriasYPrecios() {
     return await this.propiedadesRepostory.ConsultarPrecio();
+  }
+
+  async getPropiedadById(id: string) {
+    return await this.propiedadesRepostory.GetPropiedadById(id);
+  }
+
+  getUsuario(req: any) {
+    const dataValueUsuario: Model<
+      InferAttributes<UsuarioInterface>,
+      InferCreationAttributes<UsuarioInterface>
+    > = req.usuario;
+    return dataValueUsuario;
   }
 }

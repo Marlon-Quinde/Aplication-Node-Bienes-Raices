@@ -4,7 +4,12 @@ import { PropertiesRender } from "../../interfaces/render.interface";
 import { validationResult } from "express-validator";
 import { csrfRequest } from "../../interfaces/crsf.interface";
 import { Precio, Categoria, Propiedad } from "../../models/index";
-import { PropiedadInterface } from "../../interfaces/propiedad.interface";
+import {
+  DBPropiedad,
+  PropiedadInterface,
+} from "../../interfaces/propiedad.interface";
+import { Model, InferAttributes, InferCreationAttributes } from "sequelize";
+import { UsuarioInterface } from "../../interfaces/usuario.interface";
 
 const propiedadesService = new PropiedadesService();
 export const admin = (req: Request, res: Response) => {
@@ -95,8 +100,39 @@ export const guardar = async (req: csrfRequest, res: Response) => {
 };
 
 export const agregarImagen = async (req: csrfRequest, res: Response) => {
+  const { id } = req.params;
+
+  //Validar que exista
+  const propiedad = await propiedadesService.getPropiedadById(id);
+
+  if (!propiedad) {
+    return res.redirect("/mis-propiedades");
+  }
+
+  const value: DBPropiedad = propiedad.dataValues;
+
+  const { publicado, usuarioId } = value;
+
+  //Validar que este publicada
+  if (publicado) {
+    return res.redirect("/mis-propiedades");
+  }
+
+  const dataValueUsuario = propiedadesService.getUsuario(req);
+
+  const usuario = dataValueUsuario.dataValues;
+
+  //Validar que la propiedad pertenece a quien visita esta pagina
+  if (usuarioId.toString() !== usuario.id.toString()) {
+    return res.redirect("/mis-propiedades");
+  }
+
   const ctx: PropertiesRender = {
     pagina: "Agregar Imagen",
   };
-  propiedadesService.renderPagePropiedades(res, "propiedades/agregar-imagen", ctx);
+  propiedadesService.renderPagePropiedades(
+    res,
+    "propiedades/agregar-imagen",
+    ctx
+  );
 };
