@@ -3,6 +3,7 @@ import { PropertiesRender } from "../../interfaces/render.interface";
 import { PropiedadesRepository } from "./repository";
 import { InferAttributes, InferCreationAttributes, Model } from "sequelize";
 import { UsuarioInterface } from "../../interfaces/usuario.interface";
+import { PropiedadInterface } from "../../interfaces/propiedad.interface";
 
 export class PropiedadesService {
   private readonly propiedadesRepostory: PropiedadesRepository;

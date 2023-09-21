@@ -128,7 +128,9 @@ export const agregarImagen = async (req: csrfRequest, res: Response) => {
   }
 
   const ctx: PropertiesRender = {
-    pagina: "Agregar Imagen",
+    pagina: `Agregar Imagen: ${value.titulo}`,
+    propiedad: value,
+    csrfToken: req.csrfToken!(),
   };
   propiedadesService.renderPagePropiedades(
     res,
