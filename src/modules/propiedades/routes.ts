@@ -1,5 +1,11 @@
 import express from "express";
-import { admin, agregarImagen, crear, guardar } from "./controller";
+import {
+  admin,
+  agregarImagen,
+  almacenarImagen,
+  crear,
+  guardar,
+} from "./controller";
 import { validarCrearPropiedad } from "../../validations";
 import { protegerRuta } from "../../middlewares/proteger-rutas";
 import upload from "../../middlewares/subir-imagen";
@@ -13,7 +19,8 @@ router.get("/propiedades/agregar-imagen/:id", protegerRuta, agregarImagen);
 router.post(
   "/propiedades/agregar-imagen/:id",
   protegerRuta,
-  upload.single("imagen")
+  upload.single("imagen"),
+  almacenarImagen
 );
 
 export default router;
