@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { PropiedadesService } from "./service";
 import { PropertiesRender } from "../../interfaces/render.interface";
 import { validationResult } from "express-validator";
@@ -137,4 +137,45 @@ export const agregarImagen = async (req: csrfRequest, res: Response) => {
     "propiedades/agregar-imagen",
     ctx
   );
+};
+
+export const almacenarImagen = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const { id } = req.params;
+
+  //Validar que exista
+  const propiedad: any = await propiedadesService.getPropiedadById(id);
+
+  if (!propiedad) {
+    return res.redirect("/mis-propiedades");
+  }
+
+  const { publicado, usuarioId } = propiedad.dataValues;
+
+  //Validar que este publicada
+  if (publicado) {
+    return res.redirect("/mis-propiedades");
+  }
+  const dataValueUsuario = propiedadesService.getUsuario(req);
+
+  const usuario = dataValueUsuario.dataValues;
+
+  //Validar que la propiedad pertenece a quien visita esta pagina
+  if (usuarioId.toString() !== usuario.id.toString()) {
+    return res.redirect("/mis-propiedades");
+  }
+
+  try {
+    //Almacenar una instancia de la propiedad
+    propiedad.imagen = req.file!.filename;
+    propiedad.publicado = 1;
+    // console.log(req.file);
+    await propiedad.save();
+    next();
+  } catch (error) {
+    console.log(error);
+  }
 };
