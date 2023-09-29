@@ -12,9 +12,20 @@ import { Model, InferAttributes, InferCreationAttributes } from "sequelize";
 import { UsuarioInterface } from "../../interfaces/usuario.interface";
 
 const propiedadesService = new PropiedadesService();
-export const admin = (req: Request, res: Response) => {
+export const admin = async  (req: Request, res: Response) => {
+  const {id} = (req as any).usuario;
+  
+
+  const propiedades = await propiedadesService.getAllPropiedades(id);
+
+  const allPropiedades = propiedades.map(({dataValues}) => dataValues)
+  
+
+  console.log(allPropiedades);
+
   const ctx: PropertiesRender = {
     pagina: "Mis Propiedades",
+    propiedades: allPropiedades
   };
   propiedadesService.renderPagePropiedades(res, "propiedades/admin", ctx);
 };

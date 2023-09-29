@@ -22,4 +22,9 @@ export class PropiedadesRepository {
 
     return propiedad;
   }
+
+  async GetAllPropiedadesById(id: number) {
+    const propiedad = await Propiedad.findAll({where: {usuarioId: id}});
+    return propiedad
+  }
 }

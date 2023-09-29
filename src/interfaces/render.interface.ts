@@ -14,4 +14,5 @@ export interface PropertiesRender {
   precios?: PrecioInterface[];
   datos?: object;
   propiedad?: object;
+  propiedades?: any[];
 }

@@ -30,4 +30,8 @@ export class PropiedadesService {
     > = req.usuario;
     return dataValueUsuario;
   }
+
+  async getAllPropiedades(id: number){
+    return await this.propiedadesRepostory.GetAllPropiedadesById(id);
+  }
 }
