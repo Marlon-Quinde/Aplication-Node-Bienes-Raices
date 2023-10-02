@@ -24,7 +24,10 @@ export class PropiedadesRepository {
   }
 
   async GetAllPropiedadesById(id: number) {
-    const propiedad = await Propiedad.findAll({where: {usuarioId: id}});
+    const propiedad = await Propiedad.findAll({where: {usuarioId: id}, include: [
+      {model: Categoria, as: 'categoria'},
+      {model: Precio, as: 'precio'}
+    ]});
     return propiedad
   }
 }

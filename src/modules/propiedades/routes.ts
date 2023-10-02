@@ -5,6 +5,7 @@ import {
   almacenarImagen,
   crear,
   guardar,
+  editar,
 } from "./controller";
 import { validarCrearPropiedad } from "../../validations";
 import { protegerRuta } from "../../middlewares/proteger-rutas";
@@ -22,5 +23,7 @@ router.post(
   upload.single("imagen"),
   almacenarImagen
 );
+
+router.get('propiedades/editar/:id', protegerRuta, editar)
 
 export default router;

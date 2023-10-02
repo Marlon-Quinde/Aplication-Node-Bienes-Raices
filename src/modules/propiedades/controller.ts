@@ -190,3 +190,8 @@ export const almacenarImagen = async (
     console.log(error);
   }
 };
+
+
+export const editar = (req: Request, res: Response) => {
+  
+}
