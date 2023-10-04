@@ -30,4 +30,11 @@ export class PropiedadesRepository {
     ]});
     return propiedad
   }
+
+  async GetPropiedadByIdAndByUserId(id: string ,usuarioId: string){
+    const propiedad = await Propiedad.findOne({where: {
+      id, usuarioId
+    }})
+    return propiedad
+  }
 }

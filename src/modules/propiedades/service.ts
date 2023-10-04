@@ -34,4 +34,8 @@ export class PropiedadesService {
   async getAllPropiedades(id: number){
     return await this.propiedadesRepostory.GetAllPropiedadesById(id);
   }
+
+  async getPropiedadByIdAndUserId(id: string ,usuarioId: string){
+    return await this.propiedadesRepostory.GetPropiedadByIdAndByUserId(id ,usuarioId)
+  }
 }

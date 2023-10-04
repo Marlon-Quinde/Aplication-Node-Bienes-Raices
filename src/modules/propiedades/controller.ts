@@ -192,6 +192,28 @@ export const almacenarImagen = async (
 };
 
 
-export const editar = (req: Request, res: Response) => {
-  
+export const editar = async (req: Request, res: Response, next: NextFunction) => {
+  const {dataValues} = (req as any).usuario;
+  const {id} = req.params
+  const propiedad = await propiedadesService.getPropiedadByIdAndUserId(id.toString(), dataValues.id.toString());
+
+  if(!propiedad) {
+    return res.redirect('/mis-propiedades');
+  }
+  console.log(propiedad);
+  const [categorias, precios] =
+    await propiedadesService.getCategoriasYPrecios();
+  const category = categorias.map((e) => e.dataValues);
+  const price = precios.map((e) => e.dataValues);
+
+  const ctx: PropertiesRender = {
+    pagina: "Editar Propiedad",
+    csrfToken: (req as any).csrfToken(),
+    categorias: category,
+    precios: price,
+    datos: propiedad,
+  };
+  propiedadesService  .renderPagePropiedades(res, "propiedades/editar", ctx);
 }
+
+export const editarPropiedad = async (req: Request, res: Response) => {}

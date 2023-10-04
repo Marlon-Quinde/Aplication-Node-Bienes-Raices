@@ -24,6 +24,7 @@ router.post(
   almacenarImagen
 );
 
-router.get('propiedades/editar/:id', protegerRuta, editar)
+router.get('/propiedades/editar/:id', protegerRuta, editar);
+// router.post('/propiedades/editar', protegerRuta, editarPropiedad);
 
 export default router;
