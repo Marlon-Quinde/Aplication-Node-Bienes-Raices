@@ -12,9 +12,20 @@ import { Model, InferAttributes, InferCreationAttributes } from "sequelize";
 import { UsuarioInterface } from "../../interfaces/usuario.interface";
 
 const propiedadesService = new PropiedadesService();
-export const admin = (req: Request, res: Response) => {
+export const admin = async  (req: Request, res: Response) => {
+  const {id} = (req as any).usuario;
+  
+
+  const propiedades = await propiedadesService.getAllPropiedades(id);
+
+  const allPropiedades = propiedades.map(({dataValues}) => dataValues)
+  
+
+  console.log(allPropiedades);
+
   const ctx: PropertiesRender = {
     pagina: "Mis Propiedades",
+    propiedades: allPropiedades
   };
   propiedadesService.renderPagePropiedades(res, "propiedades/admin", ctx);
 };
@@ -179,3 +190,30 @@ export const almacenarImagen = async (
     console.log(error);
   }
 };
+
+
+export const editar = async (req: Request, res: Response, next: NextFunction) => {
+  const {dataValues} = (req as any).usuario;
+  const {id} = req.params
+  const propiedad = await propiedadesService.getPropiedadByIdAndUserId(id.toString(), dataValues.id.toString());
+
+  if(!propiedad) {
+    return res.redirect('/mis-propiedades');
+  }
+  console.log(propiedad);
+  const [categorias, precios] =
+    await propiedadesService.getCategoriasYPrecios();
+  const category = categorias.map((e) => e.dataValues);
+  const price = precios.map((e) => e.dataValues);
+
+  const ctx: PropertiesRender = {
+    pagina: "Editar Propiedad",
+    csrfToken: (req as any).csrfToken(),
+    categorias: category,
+    precios: price,
+    datos: propiedad,
+  };
+  propiedadesService  .renderPagePropiedades(res, "propiedades/editar", ctx);
+}
+
+export const editarPropiedad = async (req: Request, res: Response) => {}

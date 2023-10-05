@@ -22,4 +22,19 @@ export class PropiedadesRepository {
 
     return propiedad;
   }
+
+  async GetAllPropiedadesById(id: number) {
+    const propiedad = await Propiedad.findAll({where: {usuarioId: id}, include: [
+      {model: Categoria, as: 'categoria'},
+      {model: Precio, as: 'precio'}
+    ]});
+    return propiedad
+  }
+
+  async GetPropiedadByIdAndByUserId(id: string ,usuarioId: string){
+    const propiedad = await Propiedad.findOne({where: {
+      id, usuarioId
+    }})
+    return propiedad
+  }
 }
