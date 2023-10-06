@@ -53,3 +53,22 @@ export const validarCrearPropiedad = [
   body("wc").isNumeric().withMessage("Selecciona la cantidad de Baños"),
   body("lat").notEmpty().withMessage("Ubica la propiedad en el mapa"),
 ];
+
+export const validarEditarPropiedad = [
+  body("titulo", "El titulo del anuncio es obligatorio").notEmpty(),
+  body("descripcion")
+    .notEmpty()
+    .withMessage("La descripción es obligatoria")
+    .isLength({ max: 200 })
+    .withMessage("La descripción es muy larga"),
+  body("categoriaId").isNumeric().withMessage("Selecciona una categoria"),
+  body("precioId").isNumeric().withMessage("Selecciona un rango de precio"),
+  body("habitaciones")
+    .isNumeric()
+    .withMessage("Selecciona la cantidad de habitaciones"),
+  body("estacionamiento")
+    .isNumeric()
+    .withMessage("Selecciona un rango de estacionamientos"),
+  body("wc").isNumeric().withMessage("Selecciona la cantidad de Baños"),
+  body("lat").notEmpty().withMessage("Ubica la propiedad en el mapa"),
+];

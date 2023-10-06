@@ -207,7 +207,7 @@ export const editar = async (req: Request, res: Response, next: NextFunction) =>
   const price = precios.map((e) => e.dataValues);
 
   const ctx: PropertiesRender = {
-    pagina: "Editar Propiedad",
+    pagina: `Editar Propiedad: ${propiedad.dataValues.titulo}`,
     csrfToken: (req as any).csrfToken(),
     categorias: category,
     precios: price,
@@ -216,4 +216,43 @@ export const editar = async (req: Request, res: Response, next: NextFunction) =>
   propiedadesService  .renderPagePropiedades(res, "propiedades/editar", ctx);
 }
 
-export const editarPropiedad = async (req: Request, res: Response) => {}
+export const guardarCambios = async (req: Request, res: Response) => {
+  
+  // Verificar la validacion
+
+  let resultado = validationResult(req);
+
+  const [categorias, precios] =
+    await propiedadesService.getCategoriasYPrecios();
+  const category = categorias.map((e) => e.dataValues);
+  const price = precios.map((e) => e.dataValues);
+  if (!resultado.isEmpty()) {
+    // console.log(req.body)
+    const ctx: PropertiesRender = {
+      pagina: `Editar Propiedad`,
+      csrfToken: (req as any).csrfToken(),
+      categorias: category,
+      precios: price,
+      errores: resultado.array(),
+      datos: req.body,
+    };
+    return propiedadesService.renderPagePropiedades(
+      res,
+      "propiedades/editar",
+      ctx
+    );
+  }
+  const {dataValues} = (req as any).usuario;
+  const {id} = req.params
+  const propiedad = await propiedadesService.getPropiedadByIdAndUserId(id.toString(), dataValues.id.toString());
+
+  if(!propiedad) {
+    return res.redirect('/mis-propiedades');
+  }
+
+  try {
+    console.log(propiedad);
+  } catch (error) {
+    console.log(error);
+  }
+}
