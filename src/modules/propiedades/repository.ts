@@ -23,18 +23,43 @@ export class PropiedadesRepository {
     return propiedad;
   }
 
-  async GetAllPropiedadesById(id: number) {
-    const propiedad = await Propiedad.findAll({where: {usuarioId: id}, include: [
-      {model: Categoria, as: 'categoria'},
-      {model: Precio, as: 'precio'}
-    ]});
-    return propiedad
+  async GetAllPropiedadesById(id: number, limit: number, offset: number) {
+    const propiedad = Promise.all([
+      Propiedad.findAll({
+        limit,
+        offset,
+        where: { usuarioId: id },
+        include: [
+          { model: Categoria, as: "categoria" },
+          { model: Precio, as: "precio" },
+        ],
+      }),
+      Propiedad.count({
+        where: {
+          usuarioId: id,
+        },
+      }),
+    ]);
+    return propiedad;
   }
 
-  async GetPropiedadByIdAndByUserId(id: string ,usuarioId: string){
-    const propiedad = await Propiedad.findOne({where: {
-      id, usuarioId
-    }})
-    return propiedad
+  async GetPropiedadByIdAndByUserId(id: string, usuarioId: string) {
+    const propiedad = await Propiedad.findOne({
+      where: {
+        id,
+        usuarioId,
+      },
+    });
+    return propiedad;
+  }
+
+  async GetPropiedadRelacionada(id: string) {
+    const propiedad = await Propiedad.findByPk(id, {
+      include: [
+        { model: Categoria, as: "categoria" },
+        { model: Precio, as: "precio" },
+      ],
+    });
+    return propiedad;
   }
 }

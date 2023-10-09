@@ -1,0 +1,41 @@
+extends ../layout/app
+block styles
+    link(rel="stylesheet" href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css")
+block contenido
+    //- pre= JSON.stringify(propiedad, undefined, 2)
+    div(class="py-5")
+        h1(id="titulo" class="text-4xl my-10 font-extrabold text-center")= propiedad.titulo
+        div(class="")
+            a(href="#" class="font-bold text-gray-600 text-sm") Categoria: 
+                span(class="font-normal")= propiedad.categoria.nombre
+        div(class="mt-5 md:flex gap-4")
+            div(class="md:w-2/3 bg-white shadow rounded-lg")
+                img(src=`/uploads/${propiedad.imagen}`, alt=`/uploads/${propiedad.titulo}`)
+                div(class="px-5 py-10 space-y-5")
+                    p(class="")= propiedad.descripcion
+                    h2(class="text-xl leading-6 font-bold text-gray-900") Información Propiedad
+                    div(class="grid grid-cols-1 md:grid-cols-2 gap-4")
+                        p(class="text-gray-600 font-bold text-xs") WC
+                            span(class="text-gray-800 block text-lg")= propiedad.wc
+                        p(class="text-gray-600 font-bold text-xs") Habitaciones
+                            span(class="text-gray-800 block text-lg")= propiedad.habitaciones
+                        p(class="text-gray-600 font-bold text-xs") Estacionamientos
+                            span(class="text-gray-800 block text-lg")= propiedad.estacionamiento
+                        p(class="text-gray-600 font-bold text-xs") Precio
+                            span(class="text-gray-800 block text-lg")= propiedad.precio.nombre
+            div(class="md:w-1/3")
+                h3(class="text-center py-10 leading-6 text-2xl font-bold text-gray-900") Ubicación
+                div(class="h-96" id="mapa")
+                    p(id="lat" class="hidden")= propiedad.lat
+                    p(id="lng" class="hidden")= propiedad.lng
+                    p(id="calle" class="hidden")= propiedad.calle
+                div(class="p-5")
+                    p(class="text-gray-600 font-bold text-xs") Dirección
+                        span(class="text-gray-800 block text-lg")= propiedad.calle
+
+block script 
+    script(src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js")
+    script(src="https://unpkg.com/esri-leaflet@3.0.8/dist/esri-leaflet.js")
+    script(src="https://unpkg.com/esri-leaflet-geocoder@2.2.13/dist/esri-leaflet-geocoder.js")
+    script(src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-geosearch/2.7.0/bundle.min.js")
+    script(src="/js/mostrarMapa.js")
