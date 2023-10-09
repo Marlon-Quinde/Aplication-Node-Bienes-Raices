@@ -31,11 +31,22 @@ export class PropiedadesService {
     return dataValueUsuario;
   }
 
-  async getAllPropiedades(id: number){
-    return await this.propiedadesRepostory.GetAllPropiedadesById(id);
+  async getAllPropiedades(id: number, limit: number, offset: number) {
+    return await this.propiedadesRepostory.GetAllPropiedadesById(
+      id,
+      limit,
+      offset
+    );
   }
 
-  async getPropiedadByIdAndUserId(id: string ,usuarioId: string){
-    return await this.propiedadesRepostory.GetPropiedadByIdAndByUserId(id ,usuarioId)
+  async getPropiedadByIdAndUserId(id: string, usuarioId: string) {
+    return await this.propiedadesRepostory.GetPropiedadByIdAndByUserId(
+      id,
+      usuarioId
+    );
+  }
+
+  async getPropiedadRelacionada(id: string) {
+    return await this.propiedadesRepostory.GetPropiedadRelacionada(id);
   }
 }

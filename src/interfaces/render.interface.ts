@@ -15,4 +15,9 @@ export interface PropertiesRender {
   datos?: object;
   propiedad?: object;
   propiedades?: any[];
+  paginas?: number;
+  paginaActual?: number;
+  total?: number;
+  offset?: number;
+  limit?: number;
 }

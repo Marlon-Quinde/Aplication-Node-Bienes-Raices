@@ -6,9 +6,14 @@ import {
   crear,
   guardar,
   editar,
-  guardarCambios
+  guardarCambios,
+  eliminar,
+  mostrarPropiedad,
 } from "./controller";
-import { validarCrearPropiedad, validarEditarPropiedad } from "../../validations";
+import {
+  validarCrearPropiedad,
+  validarEditarPropiedad,
+} from "../../validations";
 import { protegerRuta } from "../../middlewares/proteger-rutas";
 import upload from "../../middlewares/subir-imagen";
 
@@ -25,7 +30,15 @@ router.post(
   almacenarImagen
 );
 
-router.get('/propiedades/editar/:id', protegerRuta , editar);
-router.post('/propiedades/editar/:id', protegerRuta, validarEditarPropiedad , guardarCambios);
+router.get("/propiedades/editar/:id", protegerRuta, editar);
+router.post(
+  "/propiedades/editar/:id",
+  protegerRuta,
+  validarEditarPropiedad,
+  guardarCambios
+);
+router.post("/propiedades/:id", protegerRuta, eliminar);
+
+router.get("/propiedad/:id", mostrarPropiedad);
 
 export default router;
