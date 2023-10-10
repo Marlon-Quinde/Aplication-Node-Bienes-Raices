@@ -1,6 +1,6 @@
 (function () {
-  const lat = document.querySelector("#lat").value || 0;
-  const lng = document.querySelector("#lng").value || 0;
+  const lat = document.querySelector("#lat").value || 28.5640969;
+  const lng = document.querySelector("#lng").value || -81.2038475;
   const mapa = L.map("mapa").setView([lat, lng], 13);
 
   let marker;

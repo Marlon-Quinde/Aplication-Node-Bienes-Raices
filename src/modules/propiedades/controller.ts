@@ -1,9 +1,11 @@
+import { unlink } from "node:fs/promises";
 import { NextFunction, Request, Response } from "express";
 import { PropiedadesService } from "./service";
 import { PropertiesRender } from "../../interfaces/render.interface";
 import { validationResult } from "express-validator";
 import { csrfRequest } from "../../interfaces/crsf.interface";
 import { Precio, Categoria, Propiedad } from "../../models/index";
+import fs from "fs";
 import {
   DBPropiedad,
   PropiedadInterface,
@@ -12,11 +14,46 @@ import { Model, InferAttributes, InferCreationAttributes } from "sequelize";
 import { UsuarioInterface } from "../../interfaces/usuario.interface";
 
 const propiedadesService = new PropiedadesService();
-export const admin = (req: Request, res: Response) => {
-  const ctx: PropertiesRender = {
-    pagina: "Mis Propiedades",
-  };
-  propiedadesService.renderPagePropiedades(res, "propiedades/admin", ctx);
+export const admin = async (req: Request, res: Response) => {
+  // Leer QueryString
+
+  const { pagina: paginaActual } = req.query;
+
+  const expresion = /^[1-9]$/;
+
+  if (!expresion.test(paginaActual as string)) {
+    return res.redirect("/mis-propiedades?pagina=1");
+  }
+
+  // Limites y offset para el paginador
+
+  try {
+    const limit: number = 1;
+    const offset: number = Number(paginaActual) * limit - limit;
+    const { id } = (req as any).usuario;
+
+    const [propiedades, total] = await propiedadesService.getAllPropiedades(
+      id,
+      limit,
+      offset
+    );
+
+    const allPropiedades = propiedades.map(({ dataValues }) => dataValues);
+
+    const ctx: PropertiesRender = {
+      pagina: "Mis Propiedades",
+      csrfToken: (req as any).csrfToken!(),
+      propiedades: allPropiedades,
+      paginas: Math.ceil(total / limit),
+      paginaActual: Number(paginaActual as string),
+      total,
+      offset,
+      limit,
+    };
+    propiedadesService.renderPagePropiedades(res, "propiedades/admin", ctx);
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 export const crear = async (req: csrfRequest, res: Response) => {
@@ -178,4 +215,162 @@ export const almacenarImagen = async (
   } catch (error) {
     console.log(error);
   }
+};
+
+export const editar = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const { dataValues } = (req as any).usuario;
+  const { id } = req.params;
+  const propiedad = await propiedadesService.getPropiedadByIdAndUserId(
+    id.toString(),
+    dataValues.id.toString()
+  );
+
+  if (!propiedad) {
+    return res.redirect("/mis-propiedades");
+  }
+
+  if (!propiedad.dataValues.publicado) {
+    const ctx: PropertiesRender = {
+      pagina: `Agregar Imagen: ${propiedad.dataValues.titulo}`,
+      propiedad: propiedad.dataValues,
+      csrfToken: (req as any).csrfToken(),
+    };
+    return propiedadesService.renderPagePropiedades(
+      res,
+      "propiedades/agregar-imagen",
+      ctx
+    );
+  }
+
+  const [categorias, precios] =
+    await propiedadesService.getCategoriasYPrecios();
+  const category = categorias.map((e) => e.dataValues);
+  const price = precios.map((e) => e.dataValues);
+
+  const ctx: PropertiesRender = {
+    pagina: `Editar Propiedad: ${propiedad.dataValues.titulo}`,
+    csrfToken: (req as any).csrfToken(),
+    categorias: category,
+    precios: price,
+    datos: propiedad,
+  };
+  propiedadesService.renderPagePropiedades(res, "propiedades/editar", ctx);
+};
+
+export const guardarCambios = async (req: Request, res: Response) => {
+  // Verificar la validacion
+
+  let resultado = validationResult(req);
+
+  const [categorias, precios] =
+    await propiedadesService.getCategoriasYPrecios();
+  const category = categorias.map((e) => e.dataValues);
+  const price = precios.map((e) => e.dataValues);
+  if (!resultado.isEmpty()) {
+    // console.log(req.body)
+    const ctx: PropertiesRender = {
+      pagina: `Editar Propiedad`,
+      csrfToken: (req as any).csrfToken(),
+      categorias: category,
+      precios: price,
+      errores: resultado.array(),
+      datos: req.body,
+    };
+    return propiedadesService.renderPagePropiedades(
+      res,
+      "propiedades/editar",
+      ctx
+    );
+  }
+  const { dataValues } = (req as any).usuario;
+  const { id } = req.params;
+  const propiedad = await propiedadesService.getPropiedadByIdAndUserId(
+    id.toString(),
+    dataValues.id.toString()
+  );
+
+  if (!propiedad) {
+    return res.redirect("/mis-propiedades");
+  }
+
+  // Reescribir objeto y actualizarlo
+  try {
+    const {
+      titulo,
+      descripcion,
+      categoriaId,
+      habitaciones,
+      estacionamiento,
+      wc,
+      precioId,
+      calle,
+      lat,
+      lng,
+    } = req.body as DBPropiedad;
+
+    propiedad.set({
+      titulo,
+      descripcion,
+      categoriaId,
+      habitaciones,
+      estacionamiento,
+      wc,
+      precioId,
+      calle,
+      lat,
+      lng,
+    });
+
+    await propiedad.save();
+
+    res.redirect("/mis-propiedades");
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const eliminar = async (req: Request, res: Response) => {
+  const { dataValues } = (req as any).usuario;
+  const { id } = req.params;
+  const propiedad = await propiedadesService.getPropiedadByIdAndUserId(
+    id.toString(),
+    dataValues.id.toString()
+  );
+
+  if (!propiedad) {
+    return res.redirect("/mis-propiedades");
+  }
+
+  // Eliminar la imagen asociada
+  const imagenExiste = fs.existsSync(
+    `public/uploads/${propiedad.dataValues.imagen}`
+  );
+
+  if (!imagenExiste) {
+    await unlink(`public/uploads/${propiedad.dataValues.imagen}`);
+  }
+
+  // Eliminar la propiedad
+  await propiedad.destroy();
+  res.redirect("/mis-propiedades");
+};
+
+export const mostrarPropiedad = async (req: Request, res: Response) => {
+  const { id } = req.params;
+
+  const propiedad = await propiedadesService.getPropiedadRelacionada(id);
+
+  if (!propiedad) {
+    res.redirect("/404");
+  }
+
+  const ctx: PropertiesRender = {
+    propiedad: propiedad?.dataValues,
+    pagina: propiedad?.dataValues.titulo,
+  };
+  propiedadesService.renderPagePropiedades(res, "propiedades/mostrar", ctx);
 };

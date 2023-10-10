@@ -33,6 +33,7 @@ export const protegerRuta = async (
 
     if (usuario) {
       (req as any).usuario = usuario;
+      // res.redirect("/mis-propiedades");
       return next();
     } else {
       return res.redirect("/auth/login");
