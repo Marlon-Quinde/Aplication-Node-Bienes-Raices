@@ -3,6 +3,9 @@ header(class="bg-indigo-600 py-4")
         h2(class="text-2xl text-white font-extrabold text-center") Bienes
             span(class="font-normal") Raices
         nav(class="my-5 text-sm md:flex md:items-center md:gap-3 font-bold text-white hidden")
-            a(href="") Mis Propiedades
-            a(href="") Mi Perfil
-            a(href="" class="bg-indigo-800 py-2 px-10 rounded-lg") Cerrar Sesión
+            a(href="/auth/registro") Crear Cuenta
+            a(href="/auth/login") Iniciar sesión
+div(class="bg-indigo-700 py-5 hidden md:block")
+    div(class="container mx-auto flex justify-between")
+            each categoria in categorias
+                a(href=`/categoria/${categoria.id}` class="text-sm font-bold uppercase text-white")= categoria.nombre
