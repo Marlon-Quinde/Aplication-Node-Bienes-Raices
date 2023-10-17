@@ -1,11 +1,33 @@
 ﻿# Bienes-raices
+Welcome to the BienesRaices project, an innovative and exciting project dedicated to the buying and selling and promotion of real estate online. Below are instructions on how to explore this exciting real estate project.
+
+To begin, log into the system using your email address and password on the login page. If you do not already have an account, register and create one using the registration form.
+
+Once you have successfully logged in, you will access the main page of the system, where you will find relevant information about the properties available and the services offered by the BienesRaices team.
+
+The main page of the system offers access to two types of pages: public and private. The public pages are available to all users, even those who are not registered in the system, while the private pages require the user to log in to access them.
+
+### Some of the main functionalities of the system include:
+
+* CRUD system: allows users to create, read, update and delete property records. Users can easily search, filter and sort available properties according to their preferences.
+
+* Integrated Map: Provides users with a map view of available properties, making it easy to locate and view property locations.
+
+* Profile page: Allows users to customize their profile and store relevant information about their interests and preferences.
+
+* Internal communication: Users can send and receive messages directly through the system to other registered users.
+
+To explore the system's functionalities in detail, be sure to visit the private pages once you are logged in. These pages will give you access to a wide range of functions and tools to facilitate your experience in the world of BienesRaices.
+
+Throughout your visit, if you have any questions or need assistance, please do not hesitate to contact our customer support team. We are here to help and ensure that your experience at BienesRaices is the best it can be.
+
+We hope you enjoy exploring this exciting real estate project and that you find the perfect property for you or your friends and family. Good luck and thank you for visiting us!
 
 ## Installation
 ***
 A little intro about the installation. 
 Copy .env.example and replace .env
 ```
-...
 npm install
 npm run build
 npm run dev
