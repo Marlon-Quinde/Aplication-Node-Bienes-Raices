@@ -3,8 +3,8 @@
 ## Installation
 ***
 A little intro about the installation. 
-```
 Copy .env.example and replace .env
+```
 ...
 npm install
 npm run build
