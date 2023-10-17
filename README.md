@@ -29,8 +29,11 @@ We hope you enjoy exploring this exciting real estate project and that you find 
 A little intro about the installation. 
 Copy .env.example and replace .env
 ```
+# Deployment
 npm install
 npm run build
+
+# Development
 npm run dev
 npm run watch
 ```
