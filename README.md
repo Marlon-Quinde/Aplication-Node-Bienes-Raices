@@ -23,8 +23,9 @@ Throughout your visit, if you have any questions or need assistance, please do n
 
 We hope you enjoy exploring this exciting real estate project and that you find the perfect property for you or your friends and family. Good luck and thank you for visiting us!
 
-## Installation
 ***
+
+## Installation
 A little intro about the installation. 
 Copy .env.example and replace .env
 ```
