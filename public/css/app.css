@@ -578,11 +578,11 @@ video {
 .h-96 {
   height: 24rem;
 }
-.h-auto {
-  height: auto;
-}
 .h-\[600px\] {
   height: 600px;
+}
+.h-auto {
+  height: auto;
 }
 .min-h-screen {
   min-height: 100vh;
