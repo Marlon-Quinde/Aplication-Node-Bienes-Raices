@@ -24,5 +24,6 @@ export interface PropertiesRender {
 
 export interface AppRender {
   pagina: string;
-  categorias?: any;
+  categorias?: any[];
+  precios?: any[];
 }

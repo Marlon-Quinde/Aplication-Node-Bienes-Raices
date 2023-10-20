@@ -3,10 +3,10 @@ import { AppRender } from "../../interfaces/render.interface";
 import { AppRepository } from "./repository";
 
 export default class AppService {
-  private readonly appService: AppRepository;
+  private readonly appRepository: AppRepository;
 
   constructor() {
-    this.appService = new AppRepository();
+    this.appRepository = new AppRepository();
   }
 
   renderAuthPage(res: Response, ruta: string, ctx: AppRender) {
@@ -14,6 +14,10 @@ export default class AppService {
   }
 
   async getAllCategorias() {
-    return await this.appService.GetAllCategorias();
+    return await this.appRepository.GetAllCategorias();
+  }
+
+  async getCategoriaPrecios() {
+    return await this.appRepository.GetCategoriasPrecios();
   }
 }
