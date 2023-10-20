@@ -5,12 +5,11 @@ import { AppRender } from "../../interfaces/render.interface";
 const appService = new AppService();
 
 export const inicio = async (req: Request, res: Response) => {
-  const [categorias, precios] = await appService.getCategoriaPrecios();
-  console.log("[CATEGORIAS]", categorias);
+  const [categorias, precios, casas, departamentos] = await appService.getCategoriaPrecios();
   const ctx: AppRender = {
     pagina: "Inicio",
     categorias,
-    precios,
+    precios, casas, departamentos
   };
   return appService.renderAuthPage(res, "inicio", ctx);
 };
