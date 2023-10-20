@@ -12,8 +12,10 @@ import {
 } from "../../interfaces/propiedad.interface";
 import { Model, InferAttributes, InferCreationAttributes } from "sequelize";
 import { UsuarioInterface } from "../../interfaces/usuario.interface";
+import AppService from "../app/service";
 
 const propiedadesService = new PropiedadesService();
+const appService = new AppService();
 export const admin = async (req: Request, res: Response) => {
   // Leer QueryString
 
@@ -363,6 +365,8 @@ export const mostrarPropiedad = async (req: Request, res: Response) => {
   const { id } = req.params;
 
   const propiedad = await propiedadesService.getPropiedadRelacionada(id);
+  const categorias = await appService.getAllCategorias();
+  const categoriasFiltradas = categorias.map(({ dataValues }) => dataValues);
 
   if (!propiedad) {
     res.redirect("/404");
@@ -371,6 +375,7 @@ export const mostrarPropiedad = async (req: Request, res: Response) => {
   const ctx: PropertiesRender = {
     propiedad: propiedad?.dataValues,
     pagina: propiedad?.dataValues.titulo,
+    categorias: categoriasFiltradas,
   };
   propiedadesService.renderPagePropiedades(res, "propiedades/mostrar", ctx);
 };

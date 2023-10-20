@@ -4,6 +4,7 @@ import cookieParser from "cookie-parser";
 import usuarioRoutes from "./modules/auth/routes";
 import propiedadesRoutes from "./modules/propiedades/routes";
 import appRoutes from "./modules/app/routes";
+import apiRoutes from "./modules/api/routes";
 import db from "./config/db";
 import path from "path";
 import { BACKEND_PORT } from "./environments";
@@ -50,6 +51,9 @@ app.use(express.static("public"));
 app.use("/auth", usuarioRoutes);
 app.use("/", propiedadesRoutes);
 app.use("/", appRoutes);
+
+// api
+app.use("/api", apiRoutes);
 
 //?Definir un puerto y arrancar el proyecto
 const port = BACKEND_PORT || 3000;

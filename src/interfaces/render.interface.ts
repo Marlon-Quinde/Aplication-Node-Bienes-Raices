@@ -21,3 +21,9 @@ export interface PropertiesRender {
   offset?: number;
   limit?: number;
 }
+
+export interface AppRender {
+  pagina: string;
+  categorias?: any[];
+  precios?: any[];
+}
