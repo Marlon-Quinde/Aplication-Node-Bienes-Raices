@@ -26,4 +26,6 @@ export interface AppRender {
   pagina: string;
   categorias?: any[];
   precios?: any[];
+  casas?: any[];
+  departamentos?: any[]
 }
