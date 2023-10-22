@@ -1,8 +1,10 @@
 import { Categoria, Precio, Propiedad } from "../../models/index";
-
+import { Op } from "sequelize";
 export class AppRepository {
   async GetAllCategorias() {
-    return await Categoria.scope("eliminarDataInnecesaria").findAll();
+    return await Categoria.scope("eliminarDataInnecesaria").findAll({
+      raw: true,
+    });
   }
 
   async GetCategoriasPrecios() {
@@ -25,5 +27,30 @@ export class AppRepository {
         order: [["createdAt", "DESC"]],
       }),
     ]);
+  }
+
+  async CategoriaById(id: string) {
+    return await Categoria.findByPk(id, { raw: true });
+  }
+
+  async GetAllPropiedades(id: number) {
+    return await Propiedad.findAll({
+      where: { categoriaId: id },
+      // raw: true,
+      limit: 10,
+      order: [["createdAt", "ASC"]],
+      include: [{ model: Precio, as: "precio" }],
+    });
+  }
+
+  async ConsultarPropiedad(termino: string) {
+    return await Propiedad.findAll({
+      where: {
+        titulo: {
+          [Op.like]: "%" + termino + "%",
+        },
+      },
+      include: [{ model: Precio, as: "precio" }],
+    });
   }
 }

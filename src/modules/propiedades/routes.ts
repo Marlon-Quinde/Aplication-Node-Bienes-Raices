@@ -16,6 +16,7 @@ import {
 } from "../../validations";
 import { protegerRuta } from "../../middlewares/proteger-rutas";
 import upload from "../../middlewares/subir-imagen";
+import { identificarUsuario } from "../../middlewares/identificar-usuario";
 
 const router = express.Router();
 
@@ -39,6 +40,6 @@ router.post(
 );
 router.post("/propiedades/:id", protegerRuta, eliminar);
 
-router.get("/propiedad/:id", mostrarPropiedad);
+router.get("/propiedad/:id", identificarUsuario, mostrarPropiedad);
 
 export default router;

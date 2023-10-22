@@ -25,7 +25,10 @@ export const protegerRuta = async (
   //COMPROBAR SI ESE TOKEN ES VALIDO
 
   try {
-    const decoded = jwt.verify(_token, TOKEN_KEY!) as TokenInterface;
+    const decoded: TokenInterface = jwt.verify(
+      _token,
+      TOKEN_KEY!
+    ) as TokenInterface;
     const usuario: RespuestaObjeto<UsuarioSinDataSensible> =
       await Usuario.scope("eliminarPassword").findByPk(decoded.id);
 
