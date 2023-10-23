@@ -4,14 +4,17 @@ import { PropiedadesService } from "./service";
 import { PropertiesRender } from "../../interfaces/render.interface";
 import { validationResult } from "express-validator";
 import { csrfRequest } from "../../interfaces/crsf.interface";
-import { Precio, Categoria, Propiedad } from "../../models/index";
+import { Precio, Categoria, Propiedad, Mensaje } from "../../models/index";
 import fs from "fs";
 import {
   DBPropiedad,
   PropiedadInterface,
 } from "../../interfaces/propiedad.interface";
 import { Model, InferAttributes, InferCreationAttributes } from "sequelize";
-import { UsuarioInterface } from "../../interfaces/usuario.interface";
+import {
+  UsuarioInterface,
+  UsuarioSinDataSensible,
+} from "../../interfaces/usuario.interface";
 import AppService from "../app/service";
 import { esVendedor } from "../../helpers";
 
@@ -31,7 +34,7 @@ export const admin = async (req: Request, res: Response) => {
   // Limites y offset para el paginador
 
   try {
-    const limit: number = 1;
+    const limit: number = 10;
     const offset: number = Number(paginaActual) * limit - limit;
     const { id } = (req as any).usuario;
 
@@ -364,8 +367,6 @@ export const eliminar = async (req: Request, res: Response) => {
 
 export const mostrarPropiedad = async (req: Request, res: Response) => {
   const { id } = req.params;
-
-  console.log((req as any).usuario);
   const propiedad = await propiedadesService.getPropiedadRelacionada(id);
   const categorias = await appService.getAllCategorias();
 
@@ -385,4 +386,70 @@ export const mostrarPropiedad = async (req: Request, res: Response) => {
     ),
   };
   propiedadesService.renderPagePropiedades(res, "propiedades/mostrar", ctx);
+};
+
+export const enviarMensaje = async (req: Request, res: Response) => {
+  const { id } = req.params;
+
+  const propiedad = await propiedadesService.getPropiedadRelacionada(id);
+  const categorias = await appService.getAllCategorias();
+
+  if (!propiedad) {
+    res.redirect("/404");
+  }
+
+  // Render errores
+  const resultado = validationResult(req);
+
+  if (!resultado.isEmpty()) {
+    const ctx: PropertiesRender = {
+      propiedad: propiedad?.dataValues,
+      pagina: propiedad?.dataValues.titulo,
+      categorias,
+      csrfToken: (req as any).csrfToken(),
+      usuario: (req as any).usuario,
+      esVendedor: esVendedor(
+        (req as any).usuario?.id.toString(),
+        propiedad?.dataValues.usuarioId.toString()
+      ),
+      errores: resultado.array(),
+    };
+    return propiedadesService.renderPagePropiedades(
+      res,
+      "propiedades/mostrar",
+      ctx
+    );
+  }
+
+  // Almacenar mensaje
+  const { mensaje: mensajes } = req.body;
+  const { id: propiedadId } = req.params;
+  const { id: usuarioId }: UsuarioSinDataSensible = (req as any).usuario;
+
+  await Mensaje.create({
+    mensajes,
+    usuarioId,
+    propiedadId,
+  });
+
+  const ctx: PropertiesRender = {
+    propiedad: propiedad?.dataValues,
+    pagina: propiedad?.dataValues.titulo,
+    categorias,
+    csrfToken: (req as any).csrfToken(),
+    usuario: (req as any).usuario,
+    esVendedor: esVendedor(
+      (req as any).usuario?.id.toString(),
+      propiedad?.dataValues.usuarioId.toString()
+    ),
+    enviado: true,
+  };
+  propiedadesService.renderPagePropiedades(res, "propiedades/mostrar", ctx);
+};
+
+export const verMensajes = async (req: Request, res: Response) => {
+  const ctx: PropertiesRender = {
+    pagina: "Mensajes",
+  };
+  propiedadesService.renderPagePropiedades(res, "propiedades/mensajes", ctx);
 };

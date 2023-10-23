@@ -9,10 +9,13 @@ import {
   guardarCambios,
   eliminar,
   mostrarPropiedad,
+  enviarMensaje,
+  verMensajes,
 } from "./controller";
 import {
   validarCrearPropiedad,
   validarEditarPropiedad,
+  validarMensaje,
 } from "../../validations";
 import { protegerRuta } from "../../middlewares/proteger-rutas";
 import upload from "../../middlewares/subir-imagen";
@@ -41,5 +44,14 @@ router.post(
 router.post("/propiedades/:id", protegerRuta, eliminar);
 
 router.get("/propiedad/:id", identificarUsuario, mostrarPropiedad);
+
+router.post(
+  "/propiedad/:id",
+  validarMensaje,
+  identificarUsuario,
+  enviarMensaje
+);
+
+router.get("/mensajes/:id", protegerRuta, verMensajes);
 
 export default router;

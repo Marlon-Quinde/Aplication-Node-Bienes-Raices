@@ -21,6 +21,7 @@ export interface PropertiesRender {
   offset?: number;
   limit?: number;
   esVendedor?: boolean;
+  enviado?: boolean;
 }
 
 export interface AppRender {
