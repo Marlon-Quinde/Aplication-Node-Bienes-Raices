@@ -1,3 +1,11 @@
 extends ../layout/admin
 block contenido
     h2(class="text-2xl font-extrabold text-center my-10")= pagina
+
+    a(href="/mis-propiedades" class="text-center rounded py-2  px-10 bg-indigo-600 hover:bg-indigo-700 text-sm uppercase font-bold text-white my-5 inline-block w-full sm:w-auto") Volver
+
+    div(class="mx-auto max-w-6xl bg-white shadow")
+        if mensajes.length
+            p(class) Si hay mensajes
+        else
+            p(class="text-center text-gray-600 p-5") No hay mensajes

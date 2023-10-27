@@ -448,8 +448,18 @@ export const enviarMensaje = async (req: Request, res: Response) => {
 };
 
 export const verMensajes = async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const propiedad = await propiedadesService.getMensajesPropiedadById(
+    id.toString()
+  );
+
+  if (!propiedad) {
+    return res.redirect("/mis-propiedades");
+  }
+
   const ctx: PropertiesRender = {
     pagina: "Mensajes",
+    mensajes: propiedad.dataValues.mensajes,
   };
   propiedadesService.renderPagePropiedades(res, "propiedades/mensajes", ctx);
 };

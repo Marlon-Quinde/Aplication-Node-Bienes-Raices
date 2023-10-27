@@ -22,6 +22,7 @@ export interface PropertiesRender {
   limit?: number;
   esVendedor?: boolean;
   enviado?: boolean;
+  mensajes?: string[];
 }
 
 export interface AppRender {

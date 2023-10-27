@@ -63,4 +63,10 @@ export class PropiedadesRepository {
     });
     return propiedad;
   }
+
+  async GetMensajesPropiedadById(id: string) {
+    return await Propiedad.findByPk(id, {
+      include: [{ model: Mensaje, as: "mensajes" }],
+    });
+  }
 }
