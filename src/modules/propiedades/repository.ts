@@ -4,7 +4,7 @@ import {
   InferCreationAttributes,
   CreationOptional,
 } from "sequelize";
-import { Propiedad, Categoria, Precio, Mensaje } from "../../models";
+import { Propiedad, Categoria, Precio, Mensaje, Usuario } from "../../models";
 import { PrecioInterface } from "../../interfaces/precio.interface";
 import { CategoriaInterface } from "../../interfaces/categoria.interface";
 
@@ -66,7 +66,15 @@ export class PropiedadesRepository {
 
   async GetMensajesPropiedadById(id: string) {
     return await Propiedad.findByPk(id, {
-      include: [{ model: Mensaje, as: "mensajes" }],
+      include: [
+        {
+          model: Mensaje,
+          as: "mensajes",
+          include: [
+            { model: Usuario.scope("eliminarPassword"), as: "usuario" },
+          ],
+        },
+      ],
     });
   }
 }

@@ -11,6 +11,7 @@ import {
   mostrarPropiedad,
   enviarMensaje,
   verMensajes,
+  cambiarEstado,
 } from "./controller";
 import {
   validarCrearPropiedad,
@@ -33,14 +34,15 @@ router.post(
   upload.single("imagen"),
   almacenarImagen
 );
-
 router.get("/propiedades/editar/:id", protegerRuta, editar);
+
 router.post(
   "/propiedades/editar/:id",
   protegerRuta,
   validarEditarPropiedad,
   guardarCambios
 );
+router.put("/propiedades/:id", protegerRuta, cambiarEstado);
 router.post("/propiedades/:id", protegerRuta, eliminar);
 
 router.get("/propiedad/:id", identificarUsuario, mostrarPropiedad);

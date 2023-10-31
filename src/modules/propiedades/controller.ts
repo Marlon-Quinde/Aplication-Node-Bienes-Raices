@@ -17,6 +17,7 @@ import {
 } from "../../interfaces/usuario.interface";
 import AppService from "../app/service";
 import { esVendedor } from "../../helpers";
+import { formatearFecha } from "../../helpers/index";
 
 const propiedadesService = new PropiedadesService();
 const appService = new AppService();
@@ -365,6 +366,28 @@ export const eliminar = async (req: Request, res: Response) => {
   res.redirect("/mis-propiedades");
 };
 
+// Modifica el estado de la propiead
+
+export const cambiarEstado = async (req: Request, res: Response) => {
+  const { dataValues } = (req as any).usuario;
+  const { id } = req.params;
+  const propiedad = await propiedadesService.getPropiedadByIdAndUserId(
+    id.toString(),
+    dataValues.id.toString()
+  );
+
+  if (!propiedad) {
+    return res.redirect("/mis-propiedades");
+  }
+
+  (propiedad as any).publicado = !(propiedad as any).publicado;
+
+  await propiedad.save();
+  res.json({
+    resultado: "ok",
+  });
+};
+
 export const mostrarPropiedad = async (req: Request, res: Response) => {
   const { id } = req.params;
   const propiedad = await propiedadesService.getPropiedadRelacionada(id);
@@ -460,6 +483,7 @@ export const verMensajes = async (req: Request, res: Response) => {
   const ctx: PropertiesRender = {
     pagina: "Mensajes",
     mensajes: propiedad.dataValues.mensajes,
+    formatearFecha,
   };
   propiedadesService.renderPagePropiedades(res, "propiedades/mensajes", ctx);
 };

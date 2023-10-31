@@ -1,4 +1,6 @@
 extends ../layout/admin
+block styles
+    meta(name="csrf-token" content= csrfToken)
 block contenido
     div(class="py-10")
     h1(class="text-4xl my-10 font-extrabold text-center") Bienes
@@ -24,8 +26,7 @@ block contenido
                                     = propiedad.precio.nombre
                                 a(href=`/mensajes/${propiedad.id}` class="text-sm text-gray-600")= `${propiedad.mensajes.length} Mensajes`
                             div(class="sm:w-1/4 md:w-2/6 lg:flex-1 flex flex-col sm:flex-row gap-3")
-                                form(action="")
-                                    input(type="submit" class=`w-full px-2 py-2 md:py-1 text-sm leading-5 font-semibold rounded cursor-pointer ${propiedad.publicado ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'}` value=`${propiedad.publicado ? 'Publicado' : 'No Publicado'}`)
+                                button(type="button" data-propiedad-id=`${propiedad.id}` class=`cambiar-estado w-full px-2 py-2 md:py-1 text-sm leading-5 font-semibold rounded cursor-pointer ${propiedad.publicado ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'}`)=`${propiedad.publicado ? 'Publicado' : 'No Publicado'}`
                                 a(href=`/propiedades/editar/${propiedad.id}` class="px-2  text-center py-2 md:py-1 text-sm leading-5 font-semibold rounded cursor-pointer bg-indigo-100 text-indigo-800") Editar
 
                                 form(action=`/propiedades/${propiedad.id}` method="POST")
@@ -47,3 +48,5 @@ block contenido
                                 a(href=`/mis-propiedades?pagina=${n}` class=`${paginaActual == n ? 'bg-indigo-50 border-indigo-500 text-indigo-600' : 'bg-white border-gray-300 text-gray-500 hover:bg-gray-50'} relative inline-flex px-4 py-2 border text-sm font-medium`) #{n++}
     else
         p(class="text-center") No existen propiedades
+block script
+    script(src="/js/cambiarEstado.js")

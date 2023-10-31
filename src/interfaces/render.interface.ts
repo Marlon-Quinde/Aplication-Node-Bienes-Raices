@@ -23,6 +23,7 @@ export interface PropertiesRender {
   esVendedor?: boolean;
   enviado?: boolean;
   mensajes?: string[];
+  formatearFecha?: any;
 }
 
 export interface AppRender {
