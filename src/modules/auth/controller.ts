@@ -72,6 +72,10 @@ export const autenticar = async (req: csrfRequest, res: Response) => {
     .redirect("/mis-propiedades");
 };
 
+export const cerrarSesion = (req: Request, res: Response) => {
+  return res.clearCookie("_token").status(200).redirect("/auth/login");
+};
+
 export const formularioRegistro = (req: csrfRequest, res: Response) => {
   const ctx: PropertiesRender = {
     pagina: "Crear Cuenta",

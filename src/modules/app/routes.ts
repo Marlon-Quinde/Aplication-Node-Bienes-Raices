@@ -8,7 +8,7 @@ const router = express.Router();
 router.get("/", inicio);
 
 // Categorias
-router.get("/categorias/:id", categoria);
+router.get("/categoria/:id", categoria);
 
 // Pagina 404
 router.get("/404", noEncontrado);

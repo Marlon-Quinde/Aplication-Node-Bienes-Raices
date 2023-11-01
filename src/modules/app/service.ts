@@ -20,4 +20,16 @@ export default class AppService {
   async getCategoriaPrecios() {
     return await this.appRepository.GetCategoriasPrecios();
   }
+
+  async getCategoriaById(id: string) {
+    return await this.appRepository.CategoriaById(id);
+  }
+
+  async getAllPropiedades(id: number) {
+    return await this.appRepository.GetAllPropiedades(id);
+  }
+
+  async consultarRegistro(termino: string) {
+    return await this.appRepository.ConsultarPropiedad(termino);
+  }
 }

@@ -7,10 +7,10 @@ export interface PropertiesRender {
   csrfToken?: string;
   mensaje?: string;
   errores?: Record<string, unknown>[];
-  usuario?: Record<string, string>;
+  usuario?: Record<string, string> | any;
   error?: boolean;
   barra?: boolean;
-  categorias?: CategoriaInterface[];
+  categorias?: CategoriaInterface[] | any;
   precios?: PrecioInterface[];
   datos?: object;
   propiedad?: object;
@@ -20,6 +20,10 @@ export interface PropertiesRender {
   total?: number;
   offset?: number;
   limit?: number;
+  esVendedor?: boolean;
+  enviado?: boolean;
+  mensajes?: string[];
+  formatearFecha?: any;
 }
 
 export interface AppRender {
@@ -27,5 +31,5 @@ export interface AppRender {
   categorias?: any[];
   precios?: any[];
   casas?: any[];
-  departamentos?: any[]
+  departamentos?: any[];
 }

@@ -1,8 +1,11 @@
 header(class="bg-indigo-600 py-4")
     div(class="container mx-auto flex justify-between  items-center")
-        h2(class="text-2xl text-white font-extrabold text-center") Bienes
-            span(class="font-normal") Raices
+        a(href="/") 
+            h2(class="text-2xl text-white font-extrabold text-center") Bienes
+                span(class="font-normal") Raices
         nav(class="my-5 text-sm md:flex md:items-center md:gap-3 font-bold text-white hidden")
-            a(href="") Mis Propiedades
+            a(href="/mis-propiedades") Mis Propiedades
             a(href="") Mi Perfil
-            a(href="" class="bg-indigo-800 py-2 px-10 rounded-lg") Cerrar Sesión
+            form(action="/auth/cerrar-sesion" method="POST")
+                input(type="submit" class="bg-indigo-800 py-2 px-10 rounded-lg" value="Cerrar Sesión")
+                input(type="hidden" name="_csrf" value=csrfToken)

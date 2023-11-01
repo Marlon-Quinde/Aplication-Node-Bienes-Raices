@@ -9,6 +9,7 @@ import {
   resetPassword,
   comprobarToken,
   nuevoPassword,
+  cerrarSesion,
 } from "./controller";
 import {
   validarPassword,
@@ -22,6 +23,9 @@ const router = express.Router();
 //? Login
 router.get("/login", validarUsuario, formularioLogin);
 router.post("/login", validarLogin, autenticar);
+
+//? Cerrar Sesion
+router.post("/cerrar-sesion", cerrarSesion);
 
 //? Registro
 router.get("/registro", formularioRegistro);

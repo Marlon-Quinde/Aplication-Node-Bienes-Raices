@@ -4,7 +4,7 @@ import {
   InferCreationAttributes,
   CreationOptional,
 } from "sequelize";
-import { Propiedad, Categoria, Precio } from "../../models";
+import { Propiedad, Categoria, Precio, Mensaje, Usuario } from "../../models";
 import { PrecioInterface } from "../../interfaces/precio.interface";
 import { CategoriaInterface } from "../../interfaces/categoria.interface";
 
@@ -32,6 +32,7 @@ export class PropiedadesRepository {
         include: [
           { model: Categoria, as: "categoria" },
           { model: Precio, as: "precio" },
+          { model: Mensaje, as: "mensajes" },
         ],
       }),
       Propiedad.count({
@@ -61,5 +62,19 @@ export class PropiedadesRepository {
       ],
     });
     return propiedad;
+  }
+
+  async GetMensajesPropiedadById(id: string) {
+    return await Propiedad.findByPk(id, {
+      include: [
+        {
+          model: Mensaje,
+          as: "mensajes",
+          include: [
+            { model: Usuario.scope("eliminarPassword"), as: "usuario" },
+          ],
+        },
+      ],
+    });
   }
 }
