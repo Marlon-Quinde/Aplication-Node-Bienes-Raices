@@ -626,6 +626,9 @@ video {
 .items-center {
   align-items: center;
 }
+.justify-end {
+  justify-content: flex-end;
+}
 .justify-center {
   justify-content: center;
 }
@@ -1118,7 +1121,15 @@ video {
     width: 66.666667%;
   }
 
+  .lg\:w-1\/6 {
+    width: 16.666667%;
+  }
+
   .lg\:flex-1 {
     flex: 1 1 0%;
+  }
+
+  .lg\:flex-row {
+    flex-direction: row;
   }
 }

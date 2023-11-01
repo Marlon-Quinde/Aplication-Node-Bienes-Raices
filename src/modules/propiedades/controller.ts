@@ -393,7 +393,7 @@ export const mostrarPropiedad = async (req: Request, res: Response) => {
   const propiedad = await propiedadesService.getPropiedadRelacionada(id);
   const categorias = await appService.getAllCategorias();
 
-  if (!propiedad) {
+  if (!propiedad || !propiedad?.dataValues.publicado) {
     res.redirect("/404");
   }
 
