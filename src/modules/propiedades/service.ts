@@ -49,4 +49,8 @@ export class PropiedadesService {
   async getPropiedadRelacionada(id: string) {
     return await this.propiedadesRepostory.GetPropiedadRelacionada(id);
   }
+
+  async getMensajesPropiedadById(id: string) {
+    return await this.propiedadesRepostory.GetMensajesPropiedadById(id);
+  }
 }

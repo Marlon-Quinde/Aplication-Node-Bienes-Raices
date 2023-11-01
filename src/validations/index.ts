@@ -72,3 +72,9 @@ export const validarEditarPropiedad = [
   body("wc").isNumeric().withMessage("Selecciona la cantidad de Baños"),
   body("lat").notEmpty().withMessage("Ubica la propiedad en el mapa"),
 ];
+
+export const validarMensaje = [
+  body("mensaje")
+    .isLength({ min: 10 })
+    .withMessage("El mensaje no puede ir vacio o es muy corto"),
+];
