@@ -23,7 +23,7 @@ export const emailRegistro = async (datos: EmailConfirmacionInterface) => {
   //Enviar email
 
   await transport.sendMail({
-    from: "BienesRaices.com",
+    from: "marlon.quin.cor@outlook.es",
     to: email,
     subject: "Confirma tu cuenta en BienesRaices.com",
     text: "Confirma tu cuenta en BienesRaices.com",

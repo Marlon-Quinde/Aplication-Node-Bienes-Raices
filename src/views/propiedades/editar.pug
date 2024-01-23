@@ -20,10 +20,10 @@ block contenido
 
                 div(class="space-y-2")
                     label(class="block text-sm uppercase text-gray-500 mb-2 font-bold" for="titulo") Titulo de anuncio
-                    input#titulo(class="w-full px-3 py-2 border border-gray-300 rounded-md placeholder-gray-400" placeholder="Titulo propiedad, ej. Casa en la playa" type="text" name="titulo" value= datos.titulo ? datos.titulo : '')
+                    input#titulo(class="w-full px-3 py-2 border border-gray-300 rounded-md placeholder-gray-400 soloLetras" placeholder="Titulo propiedad, ej. Casa en la playa" type="text" name="titulo" value= datos.titulo ? datos.titulo : '')
 
                     label(class="block text-sm uppercase text-gray-500 mb-2 font-bold" for="descripcion") Descripción
-                    textarea#descripcion(class="w-full px-3 py-2 border border-gray-300 rounded-md placeholder-gray-400" placeholder="Descripción de la propiedad" name="descripcion")= datos.descripcion ? datos.descripcion : ''
+                    textarea#descripcion(class="w-full px-3 py-2 border border-gray-300 rounded-md placeholder-gray-400 soloLetras" placeholder="Descripción de la propiedad" name="descripcion")= datos.descripcion ? datos.descripcion : ''
 
                 div(class="md:flex md:gap-4 space-y-5 md:space-y-0")
                     div(class="md:w-1/2")
@@ -73,6 +73,7 @@ block contenido
 
                 input(type="submit" class="w-full py-3 bg-indigo-600 hover:bg-indigo-700 rounded text-white font-bold uppercase cursor-pointer" value="Guardar Cambios")
 block script 
+    script(src="/js/validacionesInputs.js")
     script(src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js")
     script(src="https://unpkg.com/esri-leaflet@3.0.8/dist/esri-leaflet.js")
     script(src="https://unpkg.com/esri-leaflet-geocoder@2.2.13/dist/esri-leaflet-geocoder.js")

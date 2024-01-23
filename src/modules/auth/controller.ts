@@ -11,10 +11,11 @@ import { PropertiesRender } from "../../interfaces/render.interface";
 
 const authService = new AuthService();
 
+
 export const formularioLogin = (req: csrfRequest, res: Response) => {
   const ctx: PropertiesRender = {
     pagina: "Iniciar Sesión",
-    csrfToken: req.csrfToken!(),
+    csrfToken: req.csrfToken!()
   };
   authService.renderLoginPage(res, "auth/login", ctx);
 };
@@ -27,6 +28,8 @@ export const autenticar = async (req: csrfRequest, res: Response) => {
       pagina: "Iniciar Sesión",
       csrfToken: req.csrfToken!(),
       errores: resultado.array(),
+      
+      
     };
     return authService.renderLoginPage(res, "auth/login", ctx);
   }
