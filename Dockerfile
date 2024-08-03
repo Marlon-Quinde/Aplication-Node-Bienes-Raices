@@ -8,6 +8,6 @@ RUN npm install
 
 COPY src /app/src
 COPY public /app/public
-RUN npm run dev
+RUN tsc
 
 CMD ["node", "./dist/index.js"]
