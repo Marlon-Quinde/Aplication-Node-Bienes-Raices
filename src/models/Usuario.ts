@@ -44,7 +44,7 @@ const Usuario = db.define(
 );
 
 //TODO: Crear un helper
-Usuario.prototype.verificarPassword = function (password: string) {
+(Usuario.prototype as any).verificarPassword = function (password: string) {
   return bcrypt.compareSync(password, this.password);
 };
 

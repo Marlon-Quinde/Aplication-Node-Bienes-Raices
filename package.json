@@ -9,7 +9,7 @@
     "build": "tsc",
     "css": "postcss public/css/tailwind.css -o public/css/app.css --watch",
     "js": "webpack --watch",
-    "tsc": "tsc",
+    "tsc": "tsc --watch",
     "watch": "concurrently \"npm run js\" \"npm run css\"",
     "db:importar": "ts-node ./src/seed/seeder.ts -i",
     "db:eliminar": "ts-node ./src/seed/seeder.ts -e"
