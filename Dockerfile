@@ -4,6 +4,9 @@ RUN npm install typescript -g && npm install typescript@latest -g && npm i -g no
 WORKDIR /app/
 COPY package*.json /app/
 COPY tsconfig.json /app/
+RUN mkdir /app/dist/views
+COPY /app/src/viws/* /app/dist/views     
+
 RUN npm install
 
 COPY src /app/src
