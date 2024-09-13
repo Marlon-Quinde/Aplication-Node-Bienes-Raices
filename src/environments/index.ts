@@ -15,3 +15,5 @@ export const EMAIL_PASS = process.env.EMAIL_PASS;
 
 //tokey key
 export const TOKEN_KEY = process.env.TOKEN_KEY;
+export const SIGNOZ_URL = process.env.SIGNOZ_URL
+export const SIGNOZ_SERVICE_NAME = process.env.SIGNOZ_SERVICE_NAME

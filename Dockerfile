@@ -5,7 +5,8 @@ WORKDIR /app/
 COPY package*.json /app/
 COPY tsconfig.json /app/
 RUN mkdir /app/dist/views
-COPY /app/src/viws/* /app/dist/views     
+RUN mkdir /app/dist/uploads
+COPY /app/src/views/* /app/dist/views     
 
 RUN npm install
 
@@ -13,4 +14,4 @@ COPY src /app/src
 COPY public /app/public
 RUN tsc
 
-CMD ["node", "./dist/index.js"]
+CMD ["node", "-r", "./tracing.js", "./dist/index.js"]

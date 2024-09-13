@@ -1,5 +1,5 @@
 // const express = require("express"); // Common JS
-import express from "express"; //ES6
+import express, { NextFunction, Request, Response } from "express"; //ES6
 import cookieParser from "cookie-parser";
 import usuarioRoutes from "./modules/auth/routes";
 import propiedadesRoutes from "./modules/propiedades/routes";
@@ -39,6 +39,7 @@ const viewsPath = path.join(__dirname, "views");
 // console.log({
 //   viewsPath,
 // });
+
 
 // Habilitar pug
 app.set("view engine", "pug");

@@ -3,7 +3,7 @@ import { ApiService } from "./service";
 
 const apiService = new ApiService();
 
-export const propiedades = async (req: Request, res: Response) => {
+export const propiedades = async () => {
   const propiedades = await apiService.apiGetAllPropiedades();
-  res.json(propiedades);
+  return propiedades
 };
