@@ -1,9 +1,9 @@
 import { Sequelize } from "sequelize";
-import { DB_NOMBRE, DB_PASS, DB_USER } from "../environments";
+import { DB_HOST, DB_NAME, DB_PASS, DB_PORT, DB_USER } from "../environments";
 
-const db = new Sequelize(DB_NOMBRE, DB_USER, DB_PASS, {
-  host: process.env.DB_HOST,
-  port: 3306,
+const db = new Sequelize(DB_NAME, DB_USER, DB_PASS, {
+  host: DB_HOST,
+  port: Number(DB_PORT),
   dialect: "mysql",
   define: {
     timestamps: true,
