@@ -1,17 +1,16 @@
 FROM node:18.20.4-slim
 
-RUN npm install typescript -g && npm install typescript@latest -g && npm i -g nodemon
+RUN apt-get update && apt-get install -y python-is-python3
+RUN npm install pm2 -g
+RUN npm install typescript@latest -g
 WORKDIR /app/
-COPY package*.json /app/
-COPY tsconfig.json /app/
+COPY . /app/
+COPY public /app/public
+    
+RUN npm install && npm run build
+
 RUN mkdir /app/dist/views
 RUN mkdir /app/dist/uploads
-COPY /app/src/views/* /app/dist/views     
+COPY src/views/. /app/dist/views/
 
-RUN npm install
-
-COPY src /app/src
-COPY public /app/public
-RUN tsc
-
-CMD ["node", "-r", "./tracing.js", "./dist/index.js"]
+CMD ["pm2-runtime", "ecosystem.config.js"]

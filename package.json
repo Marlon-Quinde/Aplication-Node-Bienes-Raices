@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node -r ./tracing.js dist/index.js",
     "dev": "nodemon src/index.ts",
-    "build": "tsc",
+    "build": "webpack && tsc",
     "css": "postcss public/css/tailwind.css -o public/css/app.css --watch",
     "js": "webpack --watch",
     "tsc": "tsc --watch",

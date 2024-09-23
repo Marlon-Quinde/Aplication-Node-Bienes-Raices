@@ -1,4 +1,5 @@
 // const express = require("express"); // Common JS
+import "../tracing.js"
 import express, { NextFunction, Request, Response } from "express"; //ES6
 import cookieParser from "cookie-parser";
 import usuarioRoutes from "./modules/auth/routes";
@@ -8,6 +9,7 @@ import apiRoutes from "./modules/api/routes";
 import db from "./config/db";
 import path from "path";
 import { BACKEND_PORT } from "./environments";
+
 
 const csrf = require("@dr.pogodin/csurf");
 // Crear la App
@@ -57,7 +59,7 @@ app.use("/", appRoutes);
 app.use("/api", apiRoutes);
 
 //?Definir un puerto y arrancar el proyecto
-const port = BACKEND_PORT || 3000;
+const port = BACKEND_PORT;
 app.listen(port, () => {
   console.log(`El servidor esta funcionando en el puerto ${port}`);
 });
