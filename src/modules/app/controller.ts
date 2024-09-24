@@ -13,6 +13,7 @@ export const inicio = async (req: Request, res: Response) => {
     precios,
     casas,
     departamentos,
+    usuario: (req as any).usuario,
     csrfToken: (req as any).csrfToken(),
   };
   return appService.renderAuthPage(res, "inicio", ctx);
@@ -35,6 +36,7 @@ export const categoria = async (req: Request, res: Response) => {
     categoria,
     categorias,
     csrfToken: (req as any).csrfToken(),
+    usuario: (req as any).usuario
   });
 };
 export const noEncontrado = async (req: Request, res: Response) => {

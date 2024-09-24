@@ -24,6 +24,7 @@ export interface PropertiesRender {
   enviado?: boolean;
   mensajes?: string[];
   formatearFecha?: any;
+  auth?: boolean
 }
 
 export interface AppRender {
