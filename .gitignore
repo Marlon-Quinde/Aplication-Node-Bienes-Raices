@@ -4,3 +4,4 @@
 /public/uploads/*
 /public/js/*
 .vscode
+.vercel
