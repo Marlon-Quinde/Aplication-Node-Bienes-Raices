@@ -58,6 +58,9 @@ app.use("/", appRoutes);
 // api
 app.use("/api", apiRoutes);
 
+app.get('/', (req: Request, res: Response) => res.redirect('/') )
+
+
 //?Definir un puerto y arrancar el proyecto
 const port = BACKEND_PORT;
 app.listen(port, () => {
